@@ -3,6 +3,8 @@ import "./MainContent.css";
 
 export default function MainContent(): JSX.Element {
 	return (
-		<div className="MainContent"></div>
+		<div className="MainContent rounded-lg border-solid border border-black
+			border-opacity-20">
+		</div>
 	);
 }
