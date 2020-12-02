@@ -7,15 +7,10 @@ export interface TodoItemProps {
 	children: React.ReactNode,
 	// TODO Use generated type.
 	status: string,
+	onRemove: () => void,
 }
 
 export default function TodoItem(props: TodoItemProps): JSX.Element {
-
-	function removeItem() {
-		// TODO implement
-		console.log("remove item");
-	}
-
 	return (
 		<div className="TodoItem">
 			<div style={{ width: 100 }}>
@@ -24,7 +19,7 @@ export default function TodoItem(props: TodoItemProps): JSX.Element {
 			</div>
 			<div style={{ flex: 1, }}><p>{props.children}</p></div>
 			<div style={{ display: "flex", alignItems: "center", }}>
-				<Button onClick={() => { removeItem(); }}>Remove</Button>
+				<Button onClick={props.onRemove}>Remove</Button>
 			</div>
 		</div >
 	);
