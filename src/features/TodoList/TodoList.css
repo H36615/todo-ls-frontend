@@ -1,5 +1,10 @@
 
 .TodoList {
-	display: "flex";
-	flex-direction: "column";
+	margin: 40px 0 10px;
+}
+
+.add-item-button-div {
+	display: flex;
+	justify-content: flex-end;
+	padding: 10px;
 }
