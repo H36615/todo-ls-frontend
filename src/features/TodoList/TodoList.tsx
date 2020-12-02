@@ -9,7 +9,7 @@ export default function TodoList(): JSX.Element {
 		{
 			id: 1,
 			task: "mock task 1",
-			status: "in progress",
+			status: "todo",
 		},
 		{
 			id: 2,
@@ -19,7 +19,7 @@ export default function TodoList(): JSX.Element {
 		{
 			id: 3,
 			task: "mock task 3",
-			status: "in progress",
+			status: "done",
 		},
 	];
 
@@ -37,7 +37,7 @@ export default function TodoList(): JSX.Element {
 
 				{/* TODO type 'todoItem' when possible */}
 				{mockTodoItems.map((todoItem) =>
-					<TodoItem key={todoItem.id}>{todoItem.task}</TodoItem>
+					<TodoItem key={todoItem.id} status={todoItem.status}>{todoItem.task}</TodoItem>
 				)}
 			</div>
 		</div>
