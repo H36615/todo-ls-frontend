@@ -7,14 +7,15 @@ interface ButtonProps {
 
 export default function Button({ children, onClick }: ButtonProps): JSX.Element {
 	return (
-		<div className="MainContent">
+		<div className="Button">
 			<button
 				className="items-center rounded-md
 				px-3 py-1
-				text-indigo-500
-				bg-indigo-500 bg-opacity-20
-				hover:bg-indigo-500 hover:bg-opacity-30
-				focus:outline-none"
+				text-gray-700
+				bg-white bg-opacity-80
+				hover:bg-gray-200 hover:bg-opacity-30
+				focus:outline-none
+				border"
 				style={{ minWidth: "10px" }}
 				onClick={onClick}>
 				<p className="bold">{children}</p>
