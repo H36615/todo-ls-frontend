@@ -1,11 +1,11 @@
 import React from "react";
 
 interface ButtonProps {
-	buttonText: string,
 	onClick: () => void,
+	children: React.ReactNode,
 }
 
-export default function Button({ buttonText, onClick }: ButtonProps): JSX.Element {
+export default function Button({ children, onClick }: ButtonProps): JSX.Element {
 	return (
 		<div className="MainContent">
 			<button
@@ -17,7 +17,7 @@ export default function Button({ buttonText, onClick }: ButtonProps): JSX.Elemen
 				focus:outline-none"
 				style={{ minWidth: "10px" }}
 				onClick={onClick}>
-				<p className="bold">{buttonText}</p>
+				<p className="bold">{children}</p>
 			</button>
 		</div>
 	);

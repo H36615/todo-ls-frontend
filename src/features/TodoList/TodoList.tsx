@@ -30,7 +30,7 @@ export default function TodoList(): JSX.Element {
 
 	return (
 		<div className="TodoList">
-			<Button buttonText="Add item" onClick={() => { addItem(); }}></Button>
+			<Button onClick={() => { addItem(); }}>Add item</Button>
 
 			<div className="border-t border-b border-black border-opacity-20
 				divide-y divide-black divide-opacity-20">
