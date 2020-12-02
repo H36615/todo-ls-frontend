@@ -1,5 +1,6 @@
 import React from "react";
 import { config } from "../../config/config";
+import TodoList from "../TodoList/TodoList";
 import "./MainContent.css";
 
 export default function MainContent(): JSX.Element {
@@ -18,7 +19,7 @@ export default function MainContent(): JSX.Element {
 
 			<div className="panel rounded-lg border-solid border border-black
 				border-opacity-20">
-				lorem ipsum
+				<TodoList></TodoList>
 			</div>
 		</div>
 	);
