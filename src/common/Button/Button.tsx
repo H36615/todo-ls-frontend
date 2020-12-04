@@ -12,6 +12,7 @@ export default function Button(props: ButtonProps): JSX.Element {
 	return (
 		<div className="Button">
 			<button
+				disabled={props.disabled}
 				type={props.type || undefined}
 				className={`items-center rounded-md
 				text-gray-700 bg-white bg-opacity-80
