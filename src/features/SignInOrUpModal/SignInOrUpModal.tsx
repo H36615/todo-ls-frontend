@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Modal from "../../common/Modal/Modal";
 import "./SignInOrUpModal.css";
 import SignIn from "./SignIn";
+import SignUp from "./SignUp";
 
 interface SignInOrUpModalProps {
 	modalOpen: boolean,
@@ -20,7 +21,7 @@ export default function SignInOrUpModal(props: SignInOrUpModalProps): JSX.Elemen
 				onCloseModal={props.closeModal} closeButtonDisabled={modalButtonsDisabled}>
 
 				{/* Tab buttons */}
-				<div className="flex flex-row items-end">
+				<div className="flex flex-row items-end mb-6 mt-4">
 					<button
 						className={`items-center rounded-t-md
 						text-gray-700 bg-white bg-opacity-80
@@ -50,10 +51,20 @@ export default function SignInOrUpModal(props: SignInOrUpModalProps): JSX.Elemen
 					</button>
 				</div>
 
-				<SignIn closeModal={props.closeModal}
-					setModalButtonsDisabled={
-						(disabled: boolean) => setModalButtonsDisabled(disabled)
-					} />
+				{signInEnabled
+					? <>
+						<SignIn closeModal={props.closeModal}
+							setModalButtonsDisabled={
+								(disabled: boolean) => setModalButtonsDisabled(disabled)
+							} />
+					</>
+					: <>
+						<SignUp closeModal={props.closeModal}
+							setModalButtonsDisabled={
+								(disabled: boolean) => setModalButtonsDisabled(disabled)
+							} />
+					</>
+				}
 			</Modal>
 		</div >
 	);

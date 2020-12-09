@@ -4,7 +4,7 @@ import React from "react";
 interface InputProps {
 	label: string,
 	name: string,
-	type?: string,
+	type?: "text" | "email" | "password",
 	placeholder?: string,
 }
 
