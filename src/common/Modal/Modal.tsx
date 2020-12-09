@@ -11,6 +11,7 @@ export interface ModalProps {
 	onCloseModal: () => void,
 	header: string,
 	closeButtonText?: string,
+	closeButtonDisabled?: boolean,
 }
 
 export default function Modal(props: ModalProps): JSX.Element {

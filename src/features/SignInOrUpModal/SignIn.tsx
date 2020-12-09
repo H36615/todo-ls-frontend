@@ -6,6 +6,7 @@ import { UserClient } from "../../utils/HttpClient/UserClient";
 
 interface LoginProps {
 	closeModal: () => void,
+	setModalButtonsDisabled: (disabled: boolean) => void,
 }
 
 export default function SignIn(props: LoginProps): JSX.Element {
@@ -34,9 +35,9 @@ export default function SignIn(props: LoginProps): JSX.Element {
 	}
 	
 	function submitForm(values: FormFields) {
+		props.setModalButtonsDisabled(true);
 		return UserClient.signIn(values.email, values.password);
 	}
-	
 
 	return (
 		<Formik
@@ -49,10 +50,12 @@ export default function SignIn(props: LoginProps): JSX.Element {
 							// TODO Handle
 							props.closeModal();
 							setSubmitting(false);
+							props.setModalButtonsDisabled(false);
 						},
 						error => {
 							// TODO Handle
 							setSubmitting(false);
+							props.setModalButtonsDisabled(false);
 						}
 					);
 			}}>
