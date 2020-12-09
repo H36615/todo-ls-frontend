@@ -4,6 +4,7 @@ import "./SignInOrUpModal.css";
 import { Formik, Form } from "formik";
 import Input from "../../common/Input/Input";
 import Button from "../../common/Button/Button";
+import { UserClient } from "../../utils/HttpClient/UserClient";
 
 interface LoginModalProps {
 	modalOpen: boolean,
@@ -33,6 +34,10 @@ function validateFields(fields: FormFields) {
 	return errors;
 }
 
+function submitForm(values: FormFields) {
+	return UserClient.signIn(values.email, values.password);
+}
+
 export default function SignInOrUpModal(props: LoginModalProps): JSX.Element {
 	return (
 		<div className="SignInOrUpModal">
@@ -45,10 +50,18 @@ export default function SignInOrUpModal(props: LoginModalProps): JSX.Element {
 					initialValues={{ email: "", password: "" } as FormFields}
 					validate={(values: FormFields) => validateFields(values)}
 					onSubmit={(values: FormFields, { setSubmitting }) => {
-						setTimeout(() => {
-							console.log("submitting with ", values);
-							setSubmitting(false);
-						}, 1000);
+						submitForm(values)
+							.subscribe(
+								value => {
+									// TODO Handle
+									props.onCloseModal();
+									setSubmitting(false);
+								},
+								error => {
+									// TODO Handle
+									setSubmitting(false);
+								}
+							);
 					}}>
 					{({ isSubmitting, isValid }) => (
 						<Form>
