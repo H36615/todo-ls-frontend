@@ -12,7 +12,7 @@ export default function MainContent(): JSX.Element {
 	return (
 		<div className="MainContent">
 			<SignInOrUpModal modalOpen={signInOrUpModalOpen}
-				onCloseModal={(() => setSignInOrUpModalOpen(false))} />
+				closeModal={(() => setSignInOrUpModalOpen(false))} />
 
 			<div style={{ flexDirection: "row", display: "flex", width: "100%" }}>
 				<a href={config.sourceCodeUrl}
