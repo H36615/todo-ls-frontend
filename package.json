@@ -31,7 +31,7 @@
         "eslint-plugin-react": "^7.21.5"
     },
     "scripts": {
-        "start": "react-scripts start",
+        "start": "echo 'If issues w/ tsconfig, check out https://github.com/facebook/create-react-app/issues/10144' && react-scripts start",
         "build": "react-scripts build",
         "test": "react-scripts test",
         "eject": "react-scripts eject",
