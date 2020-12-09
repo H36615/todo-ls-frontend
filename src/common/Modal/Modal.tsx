@@ -2,6 +2,7 @@
 
 import React from "react";
 import { Transition } from "@headlessui/react";
+import ModalButton from "../ModalButton/ModalButton";
 
 export interface ModalProps {
 	/** Open modal by setting this to true */
@@ -50,16 +51,10 @@ export default function Modal(props: ModalProps): JSX.Element {
 							{/* Modal buttons */}
 							<div className="bg-gray-100 px-4 py-3
 								sm:px-6 sm:flex sm:flex-row-reverse">
-								<button type="button" onClick={props.onCloseModal} className="
-									justify-center w-full
-									rounded-md border border-gray-300
-									px-4 py-2 bg-white bg-opacity-80
-									text-gray-700 hover:bg-gray-100
-									focus:outline-none
-									focus:ring-1 focus:ring-offset-0 focus:ring-gray-300
-									mt-2 sm:mt-0 sm:ml-3 sm:w-auto">
-									{props.closeButtonText || "Close"}
-								</button>
+								<ModalButton press={props.onCloseModal}
+									disabled={props.closeButtonDisabled || false}>
+									Close
+								</ModalButton>
 							</div>
 						</div>
 					</div>
