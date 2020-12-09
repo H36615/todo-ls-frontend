@@ -73,7 +73,7 @@ export default function SignIn(props: LoginProps): JSX.Element {
 					<Button onClick={undefined}
 						disabled={isSubmitting || !isValid}
 						type="submit">
-						Submit
+						Sign in
 					</Button>
 				</Form>
 			)}
