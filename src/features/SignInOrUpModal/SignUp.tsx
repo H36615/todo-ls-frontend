@@ -9,6 +9,7 @@ import { ToastProps } from "../../common/Toast/Toast";
 interface SignUpProps {
 	closeModal: (toast: ToastProps) => void,
 	setModalButtonsDisabled: (disabled: boolean) => void,
+	toast: (toast: ToastProps) => void,
 }
 
 export default function SignUp(props: SignUpProps): JSX.Element {
@@ -68,9 +69,9 @@ export default function SignUp(props: SignUpProps): JSX.Element {
 							setSubmitting(false);
 							props.setModalButtonsDisabled(false);
 						},
-						error => {
-							// TODO toast error!
-							// props.closeModal({text: "Login success!", type: "success"});
+						() => {
+							// TODO Give errors based on response code
+							props.toast({ text: "Error", type: "warn" });
 							setSubmitting(false);
 							props.setModalButtonsDisabled(false);
 						}
