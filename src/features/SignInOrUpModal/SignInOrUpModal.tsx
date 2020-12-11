@@ -3,10 +3,11 @@ import Modal from "../../common/Modal/Modal";
 import "./SignInOrUpModal.css";
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
+import { ToastProps } from "../../common/Toast/Toast";
 
 interface SignInOrUpModalProps {
 	modalOpen: boolean,
-	closeModal: () => void,
+	closeModal: (toast: ToastProps | undefined) => void,
 }
 
 export default function SignInOrUpModal(props: SignInOrUpModalProps): JSX.Element {
@@ -18,7 +19,8 @@ export default function SignInOrUpModal(props: SignInOrUpModalProps): JSX.Elemen
 	return (
 		<div className="SignInOrUpModal">
 			<Modal modalOpen={props.modalOpen} header="Sign in / Sign up"
-				onCloseModal={props.closeModal} closeButtonDisabled={modalButtonsDisabled}>
+				onCloseModal={() => props.closeModal(undefined)}
+				closeButtonDisabled={modalButtonsDisabled}>
 
 				{/* Tab buttons */}
 				<div className="flex flex-row items-end mb-6 mt-4">
@@ -53,7 +55,8 @@ export default function SignInOrUpModal(props: SignInOrUpModalProps): JSX.Elemen
 
 				{signInEnabled
 					? <>
-						<SignIn closeModal={props.closeModal}
+						<SignIn
+							closeModal={props.closeModal}
 							setModalButtonsDisabled={
 								(disabled: boolean) => setModalButtonsDisabled(disabled)
 							} />

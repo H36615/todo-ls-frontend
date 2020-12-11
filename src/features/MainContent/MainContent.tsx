@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Button from "../../common/Button/Button";
+import Toast, { ToastProps } from "../../common/Toast/Toast";
 import { config } from "../../config/config";
 import SignInOrUpModal from "../SignInOrUpModal/SignInOrUpModal";
 import TodoList from "../TodoList/TodoList";
@@ -8,11 +9,20 @@ import "./MainContent.css";
 export default function MainContent(): JSX.Element {
 
 	const [signInOrUpModalOpen, setSignInOrUpModalOpen] = useState<boolean>(false);
+	const [toastProps, setToastProps] = useState<ToastProps>();
+
+	/** @param toast toast optional toast on close. */
+	function closeSignInOrUpModal(toast?: ToastProps | undefined): void {
+		if (toast)
+			setToastProps(toast);
+
+		setSignInOrUpModalOpen(false);
+	}
 
 	return (
 		<div className="MainContent">
 			<SignInOrUpModal modalOpen={signInOrUpModalOpen}
-				closeModal={(() => setSignInOrUpModalOpen(false))} />
+				closeModal={closeSignInOrUpModal} />
 
 			<div style={{ flexDirection: "row", display: "flex", width: "100%" }}>
 				<a href={config.sourceCodeUrl}
@@ -34,6 +44,8 @@ export default function MainContent(): JSX.Element {
 				border-opacity-20">
 				<TodoList />
 			</div>
+
+			<Toast text={toastProps?.text || ""} type={toastProps?.type || "info"}></Toast>
 		</div>
 	);
 }

@@ -4,9 +4,10 @@ import Input from "../../common/Input/Input";
 import Button from "../../common/Button/Button";
 import { UserClient } from "../../utils/HttpClient/UserClient";
 import { Observable } from "rxjs";
+import { ToastProps } from "../../common/Toast/Toast";
 
 interface SignUpProps {
-	closeModal: () => void,
+	closeModal: (toast: ToastProps) => void,
 	setModalButtonsDisabled: (disabled: boolean) => void,
 }
 
@@ -62,14 +63,14 @@ export default function SignUp(props: SignUpProps): JSX.Element {
 			onSubmit={(values: FormFields, { setSubmitting }) => {
 				submitForm(values)
 					.subscribe(
-						value => {
-							// TODO Handle
-							props.closeModal();
+						() => {
+							props.closeModal({text: "Sign up success!", type: "success"});
 							setSubmitting(false);
 							props.setModalButtonsDisabled(false);
 						},
 						error => {
-							// TODO Handle
+							// TODO toast error!
+							// props.closeModal({text: "Login success!", type: "success"});
 							setSubmitting(false);
 							props.setModalButtonsDisabled(false);
 						}

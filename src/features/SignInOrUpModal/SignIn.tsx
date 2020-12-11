@@ -3,9 +3,10 @@ import { Formik, Form } from "formik";
 import Input from "../../common/Input/Input";
 import Button from "../../common/Button/Button";
 import { UserClient } from "../../utils/HttpClient/UserClient";
+import { ToastProps } from "../../common/Toast/Toast";
 
 interface LoginProps {
-	closeModal: () => void,
+	closeModal: (toast: ToastProps) => void,
 	setModalButtonsDisabled: (disabled: boolean) => void,
 }
 
@@ -15,7 +16,7 @@ export default function SignIn(props: LoginProps): JSX.Element {
 		email: string,
 		password: string,
 	}
-	
+
 	/** Create errors object if validation fails. */
 	function validateFields(fields: FormFields) {
 		let errors = {};
@@ -23,17 +24,17 @@ export default function SignIn(props: LoginProps): JSX.Element {
 			errors = { ...errors, email: "Required" };
 		else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(fields.email))
 			errors = { ...errors, email: "Invalid email address" };
-	
+
 		if (!fields.password)
 			errors = { ...errors, password: "Required" };
 		else if (fields.password.length < 6)
 			errors = { ...errors, password: "Password must be at least 6 characters long" };
 		else if (fields.password.length > 512)
 			errors = { ...errors, password: "Password must be less than 512 characters long" };
-	
+
 		return errors;
 	}
-	
+
 	function submitForm(values: FormFields) {
 		props.setModalButtonsDisabled(true);
 		return UserClient.signIn(values.email, values.password);
@@ -46,14 +47,14 @@ export default function SignIn(props: LoginProps): JSX.Element {
 			onSubmit={(values: FormFields, { setSubmitting }) => {
 				submitForm(values)
 					.subscribe(
-						value => {
-							// TODO Handle
-							props.closeModal();
+						() => {
+							props.closeModal({text: "Login success!", type: "success"});
 							setSubmitting(false);
 							props.setModalButtonsDisabled(false);
 						},
 						error => {
-							// TODO Handle
+							// TODO toast error!
+							// props.closeModal({text: "Login success!", type: "success"});
 							setSubmitting(false);
 							props.setModalButtonsDisabled(false);
 						}
