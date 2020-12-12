@@ -20,7 +20,7 @@ export const setUserState = createAsyncThunk<UserState, UserState>(
 export const UserSlice = createSlice(
 	{
 		name: "user",
-		initialState: { signedIn: false, user: { username: "" } },
+		initialState: { signedIn: false, user: { username: "", tag: 0 } },
 		reducers: {},
 		extraReducers: builder => {
 			builder.addCase(setUserState.fulfilled, (state, action) => {

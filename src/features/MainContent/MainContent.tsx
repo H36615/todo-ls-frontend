@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import Button from "../../common/Button/Button";
-import LoadingSpinner from "../../common/LoadingSpinner/LoadingSpinner";
 import Toast, { ToastProps } from "../../common/Toast/Toast";
 import { config } from "../../config/config";
 import { RootState } from "../../store/store";
@@ -33,8 +32,7 @@ export default function MainContent(): JSX.Element {
 			<SignInOrUpModal modalOpen={signInOrUpModalOpen}
 				closeModal={closeSignInOrUpModal} />
 
-			<LoadingSpinner />
-			<div style={{ flexDirection: "row", display: "flex", width: "100%" }}>
+			<div className="flex flex-row w-full items-center">
 				<a href={config.sourceCodeUrl}
 					className="items-center rounded-md
 					border px-3 py-1
@@ -46,7 +44,14 @@ export default function MainContent(): JSX.Element {
 				</a>
 				<div style={{ flex: 1 }}></div>
 				{userSelector.signedIn
-					? <div>{userSelector.user?.username}</div>
+					? <div className="flex flex-row">
+						<div>
+							{userSelector.user?.username}
+						</div>
+						<div className="text-gray-500">
+							#{userSelector.user?.tag}
+						</div>
+					</div>
 					: <div style={{ margin: "10px 0" }}>
 						<Button onClick={() => setSignInOrUpModalOpen(true)}>
 							Sign in / Sign up
