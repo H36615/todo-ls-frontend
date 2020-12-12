@@ -8,6 +8,7 @@ import { store } from "../../store/store";
 import { setUserState } from "../../store/Slices";
 import { tap } from "rxjs/operators";
 import { IExistingUser } from "../../utils/HttpClient/Interfaces";
+import LoadingSpinner from "../../common/LoadingSpinner/LoadingSpinner";
 
 interface LoginProps {
 	closeModal: (toast: ToastProps) => void,
@@ -42,7 +43,7 @@ export default function SignIn(props: LoginProps): JSX.Element {
 
 	function submitForm(values: FormFields) {
 		props.setModalButtonsDisabled(true);
-		
+
 		return UserClient.signIn(values.email, values.password)
 			.pipe(tap(value => {
 				const userResponse = value.response as IExistingUser;
@@ -88,11 +89,18 @@ export default function SignIn(props: LoginProps): JSX.Element {
 						type="password"
 						name="password" />
 
-					<Button onClick={undefined}
-						disabled={isSubmitting || !isValid}
-						type="submit">
-						Sign in
-					</Button>
+					<div className="flex flex-row items-center">
+						<Button onClick={undefined}
+							disabled={isSubmitting || !isValid}
+							type="submit">
+							Sign in
+						</Button>
+						{isSubmitting &&
+							<div className="ml-4">
+								<LoadingSpinner />
+							</div>
+						}
+					</div>
 				</Form>
 			)}
 		</Formik>
