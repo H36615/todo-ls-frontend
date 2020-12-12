@@ -5,6 +5,7 @@ import Button from "../../common/Button/Button";
 import { UserClient } from "../../utils/HttpClient/UserClient";
 import { Observable } from "rxjs";
 import { ToastProps } from "../../common/Toast/Toast";
+import LoadingSpinner from "../../common/LoadingSpinner/LoadingSpinner";
 
 interface SignUpProps {
 	closeModal: (toast: ToastProps) => void,
@@ -65,7 +66,10 @@ export default function SignUp(props: SignUpProps): JSX.Element {
 				submitForm(values)
 					.subscribe(
 						() => {
-							props.closeModal({text: "Sign up success!", type: "success"});
+							props.closeModal({
+								text: "Sign up success! You can now sign in",
+								type: "success"
+							});
 							setSubmitting(false);
 							props.setModalButtonsDisabled(false);
 						},
@@ -93,11 +97,18 @@ export default function SignUp(props: SignUpProps): JSX.Element {
 						type="password"
 						name="password" />
 
-					<Button onClick={undefined}
-						disabled={isSubmitting || !isValid}
-						type="submit">
-						Sign in
-					</Button>
+					<div className="flex flex-row items-center">
+						<Button onClick={undefined}
+							disabled={isSubmitting || !isValid}
+							type="submit">
+							Sign up
+						</Button>
+						{isSubmitting &&
+							<div className="ml-4">
+								<LoadingSpinner />
+							</div>
+						}
+					</div>
 				</Form>
 			)}
 		</Formik>

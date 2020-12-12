@@ -14,7 +14,7 @@ export default function SignInOrUpModal(props: SignInOrUpModalProps): JSX.Elemen
 
 	const [modalButtonsDisabled, setModalButtonsDisabled] = useState<boolean>(false);
 	/** Sign in enabled, otherwise sign up is enabled. */
-	const [signInEnabled, setSignInEnabled] = useState<boolean>(false);
+	const [signInEnabled, setSignInEnabled] = useState<boolean>(true);
 	const [toastProps, setToastProps] = useState<ToastProps | undefined>();
 
 	function toast(toast: ToastProps): void {
