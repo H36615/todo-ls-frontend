@@ -18,6 +18,11 @@ export interface IExistingTodoItem extends INewTodoItem {
 	id: number,
 }
 
+export interface IExistingUser extends INewUser {
+	id: number,
+	tag: number, // Number value to seperate users w/ identical usernames.
+}
+
 export interface INewUser extends ILoginInformation {
 	username: string,
 }
