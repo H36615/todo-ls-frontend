@@ -1,7 +1,10 @@
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import Button from "../../common/Button/Button";
+import LoadingSpinner from "../../common/LoadingSpinner/LoadingSpinner";
 import Toast, { ToastProps } from "../../common/Toast/Toast";
 import { config } from "../../config/config";
+import { RootState } from "../../store/store";
 import SignInOrUpModal from "../SignInOrUpModal/SignInOrUpModal";
 import TodoList from "../TodoList/TodoList";
 import "./MainContent.css";
@@ -19,11 +22,18 @@ export default function MainContent(): JSX.Element {
 		setSignInOrUpModalOpen(false);
 	}
 
+	const userSelector = useSelector(
+		(state: RootState) => {
+			return state.user;
+		}
+	);
+
 	return (
 		<div className="MainContent">
 			<SignInOrUpModal modalOpen={signInOrUpModalOpen}
 				closeModal={closeSignInOrUpModal} />
 
+			<LoadingSpinner />
 			<div style={{ flexDirection: "row", display: "flex", width: "100%" }}>
 				<a href={config.sourceCodeUrl}
 					className="items-center rounded-md
@@ -35,9 +45,14 @@ export default function MainContent(): JSX.Element {
 					<p className="bold">Check out the src code</p>
 				</a>
 				<div style={{ flex: 1 }}></div>
-				<div style={{ margin: "10px 0" }}>
-					<Button onClick={() => setSignInOrUpModalOpen(true)}>Sign in / Sign up</Button>
-				</div>
+				{userSelector.signedIn
+					? <div>{userSelector.user?.username}</div>
+					: <div style={{ margin: "10px 0" }}>
+						<Button onClick={() => setSignInOrUpModalOpen(true)}>
+							Sign in / Sign up
+						</Button>
+					</div>
+				}
 			</div>
 
 			<div className="panel rounded-lg border-solid border border-black

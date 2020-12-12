@@ -4,6 +4,10 @@ import Input from "../../common/Input/Input";
 import Button from "../../common/Button/Button";
 import { UserClient } from "../../utils/HttpClient/UserClient";
 import { ToastProps } from "../../common/Toast/Toast";
+import { store } from "../../store/store";
+import { setUserState } from "../../store/Slices";
+import { tap } from "rxjs/operators";
+import { IExistingUser } from "../../utils/HttpClient/Interfaces";
 
 interface LoginProps {
 	closeModal: (toast: ToastProps) => void,
@@ -38,7 +42,20 @@ export default function SignIn(props: LoginProps): JSX.Element {
 
 	function submitForm(values: FormFields) {
 		props.setModalButtonsDisabled(true);
-		return UserClient.signIn(values.email, values.password);
+		
+		return UserClient.signIn(values.email, values.password)
+			.pipe(tap(value => {
+				const userResponse = value.response as IExistingUser;
+				store.dispatch(setUserState(
+					{
+						signedIn: true,
+						user: {
+							username: userResponse.username,
+							tag: userResponse.tag
+						}
+					}
+				));
+			}));
 	}
 
 	return (
@@ -54,7 +71,6 @@ export default function SignIn(props: LoginProps): JSX.Element {
 							props.setModalButtonsDisabled(false);
 						},
 						() => {
-							// TODO Give errors based on response code
 							props.toast({ text: "Error", type: "warn" });
 							setSubmitting(false);
 							props.setModalButtonsDisabled(false);
