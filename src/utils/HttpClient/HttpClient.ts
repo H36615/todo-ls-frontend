@@ -5,17 +5,35 @@ import { AjaxResponse } from "rxjs/internal/observable/dom/AjaxObservable";
 
 export class HttpClient {
 
-	public static getRequest<T>(route: string): Observable<T> {
-		return ajax.get(config.backendUrl + route) as unknown as Observable<T>;
+	public static getRequest<T>(route: string, withCredentials = true): Observable<T> {
+		return ajax(
+			{
+				url: config.backendUrl + route,
+				method: "GET",
+				withCredentials: withCredentials,
+				headers: {
+					"Content-Type": "application/json",
+				},
+			}
+		) as unknown as Observable<T>;
 	}
 
 	public static postRequest<BodyParam>(
-		route: string, bodyParam: BodyParam
-	): Observable<AjaxResponse> {
-		return ajax.post(
-			config.backendUrl + route,
-			bodyParam,
-			{ "Content-Type": "application/json" }
+		route: string,
+		bodyParam: BodyParam,
+		withCredentials = true
+	)
+		: Observable<AjaxResponse> {
+		return ajax(
+			{
+				url: config.backendUrl + route,
+				method: "POST",
+				body: bodyParam,
+				withCredentials: withCredentials,
+				headers: {
+					"Content-Type": "application/json",
+				}
+			}
 		);
 	}
 
