@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Button from "../../common/Button/Button";
 import LoadingSpinner from "../../common/LoadingSpinner/LoadingSpinner";
-import { IExistingTodoItem } from "../../utils/HttpClient/Interfaces";
+import { IExistingTodoItem, TodoItemStatus } from "../../utils/HttpClient/Interfaces";
 import { TodoItemClient } from "../../utils/HttpClient/TodoItemClient";
 import TodoList from "./TodoList";
 
@@ -13,6 +13,7 @@ export default function TodoListView(props: TodoListViewProps): JSX.Element {
 
 	const [fetchingTodoItems, setFetchingTodoItems] = useState<boolean>(false);
 	const [todoItems, setTodoItems] = useState<IExistingTodoItem[]>([]);
+	const [updatingItem, setUpdatingItem] = useState<boolean>(false);
 	/** Use state for signed in status too just to make sure data will not reload twice. */
 	const [alreadySignedIn, setAlreadySignedIn] = useState<boolean>(false);
 
@@ -38,27 +39,31 @@ export default function TodoListView(props: TodoListViewProps): JSX.Element {
 	}
 
 	function addItem() {
-		console.log("not implemented");
-		// setTodoItems(
-		// 	[
-		// 		...todoItems,
-		// 		// Placeholder. TODO implement.
-		// 		{
-		// 			id: todoItems[todoItems.length - 1].id + 1,
-		// 			user_id: 2,
-		// 			task: "task x",
-		// 			status: TodoItemStatus.done,
-		// 		}
-		// 	]
-		// );
+		setUpdatingItem(true);
+		TodoItemClient.addTodoItem(
+			{
+				task: "NEW_TASK",
+				status: TodoItemStatus.todo,
+			}
+		).subscribe(
+			() => {
+				fetchTodoItems();
+				setUpdatingItem(false);
+			},
+			() => {
+				// TODO Handle
+				setUpdatingItem(false);
+			}
+		);
 	}
 
 	function removeItem(itemId: number) {
-		setTodoItems(
-			todoItems
-				.slice()
-				.filter(item => item.id !== itemId)
-		);
+		// TODO Implement
+		// setTodoItems(
+		// 	todoItems
+		// 		.slice()
+		// 		.filter(item => item.id !== itemId)
+		// );
 	}
 
 	function contentView(): JSX.Element {
@@ -77,7 +82,11 @@ export default function TodoListView(props: TodoListViewProps): JSX.Element {
 	return (
 		<div className="TodoListView">
 			<div className="flex justify-end mr-5 mt-5">
-				<Button onClick={() => { addItem(); }}>Add item</Button>
+				<Button onClick={() => { addItem(); }} disabled={
+					updatingItem || fetchingTodoItems || !alreadySignedIn
+				}>
+					Add item
+				</Button>
 			</div>
 			<div>
 				{contentView()}
