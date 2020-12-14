@@ -1,10 +1,4 @@
 
 .TodoList {
-	margin: 40px 0 10px;
-}
-
-.add-item-button-div {
-	display: flex;
-	justify-content: flex-end;
-	padding: 10px;
+	margin: 16px 0 10px;
 }

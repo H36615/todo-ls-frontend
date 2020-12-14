@@ -5,7 +5,7 @@ import { config } from "../../config/config";
 import { IExistingUser } from "../../utils/HttpClient/Interfaces";
 import { TodoItemClient } from "../../utils/HttpClient/TodoItemClient";
 import SignInOrUpModal from "../SignInOrUpModal/SignInOrUpModal";
-import TodoList from "../TodoList/TodoList";
+import TodoListView from "../TodoList/TodoListView";
 import "./MainContent.css";
 
 export default function MainContent(): JSX.Element {
@@ -63,7 +63,7 @@ export default function MainContent(): JSX.Element {
 
 			<div className="panel rounded-lg border-solid border border-black
 				border-opacity-20">
-				<TodoList />
+				<TodoListView signedIn={signedIn !== undefined} />
 			</div>
 
 			<Toast text={toastProps?.text || ""} type={toastProps?.type || "info"}></Toast>
