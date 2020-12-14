@@ -12,7 +12,7 @@ export default function MainContent(): JSX.Element {
 
 	const [signInOrUpModalOpen, setSignInOrUpModalOpen] = useState<boolean>(false);
 	const [toastProps, setToastProps] = useState<ToastProps>();
-	const [signedIn, setSignedIn] = useState<IExistingUser>();
+	const [userInfo, setUserInfo] = useState<IExistingUser | undefined>(undefined);
 
 	/** @param toast toast optional toast on close. */
 	function closeSignInOrUpModal(
@@ -23,7 +23,7 @@ export default function MainContent(): JSX.Element {
 			setToastProps(toast);
 
 		if (signedInUser)
-			setSignedIn(signedInUser);
+			setUserInfo(signedInUser);
 
 		setSignInOrUpModalOpen(false);
 	}
@@ -44,13 +44,13 @@ export default function MainContent(): JSX.Element {
 					<p className="bold">Check out the src code</p>
 				</a>
 				<div style={{ flex: 1 }}></div>
-				{signedIn
+				{userInfo
 					? <div className="flex flex-row">
 						<div>
-							{signedIn.username}
+							{userInfo.username}
 						</div>
 						<div className="text-gray-500">
-							#{signedIn.tag}
+							#{userInfo.tag}
 						</div>
 					</div>
 					: <div style={{ margin: "10px 0" }}>
@@ -63,7 +63,7 @@ export default function MainContent(): JSX.Element {
 
 			<div className="panel rounded-lg border-solid border border-black
 				border-opacity-20">
-				<TodoListView signedIn={signedIn !== undefined} />
+				<TodoListView signedIn={userInfo !== undefined} />
 			</div>
 
 			<Toast text={toastProps?.text || ""} type={toastProps?.type || "info"}></Toast>

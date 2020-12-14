@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "../../common/Button/Button";
-import { IExistingTodoItem, TodoItemStatus } from "../../utils/HttpClient/Interfaces";
+import LoadingSpinner from "../../common/LoadingSpinner/LoadingSpinner";
+import { IExistingTodoItem } from "../../utils/HttpClient/Interfaces";
+import { TodoItemClient } from "../../utils/HttpClient/TodoItemClient";
 import TodoList from "./TodoList";
 
 interface TodoListViewProps {
@@ -9,34 +11,46 @@ interface TodoListViewProps {
 
 export default function TodoListView(props: TodoListViewProps): JSX.Element {
 
-	const [todoItems, setTodoItems] = useState<IExistingTodoItem[]>([
-		{
-			id: 1,
-			user_id: 1,
-			task: "task 1",
-			status: TodoItemStatus.todo,
-		},
-		{
-			id: 2,
-			user_id: 2,
-			task: "task 2",
-			status: TodoItemStatus.inProgres,
+	const [fetchingTodoItems, setFetchingTodoItems] = useState<boolean>(false);
+	const [todoItems, setTodoItems] = useState<IExistingTodoItem[]>([]);
+	/** Use state for signed in status too just to make sure data will not reload twice. */
+	const [alreadySignedIn, setAlreadySignedIn] = useState<boolean>(false);
+
+	useEffect(() => {
+		if (props.signedIn === true && !alreadySignedIn) {
+			setAlreadySignedIn(true);
+			fetchTodoItems();
 		}
-	]);
+	}, [props.signedIn]);
+
+	function fetchTodoItems() {
+		setFetchingTodoItems(true);
+		TodoItemClient.getAllTodoItems().subscribe(
+			todoItems => {
+				setTodoItems(todoItems);
+				setFetchingTodoItems(false);
+			},
+			() => {
+				// TODO handle error
+				setFetchingTodoItems(false);
+			}
+		);
+	}
 
 	function addItem() {
-		setTodoItems(
-			[
-				...todoItems,
-				// Placeholder. TODO implement.
-				{
-					id: todoItems[todoItems.length - 1].id + 1,
-					user_id: 2,
-					task: "task x",
-					status: TodoItemStatus.done,
-				}
-			]
-		);
+		console.log("not implemented");
+		// setTodoItems(
+		// 	[
+		// 		...todoItems,
+		// 		// Placeholder. TODO implement.
+		// 		{
+		// 			id: todoItems[todoItems.length - 1].id + 1,
+		// 			user_id: 2,
+		// 			task: "task x",
+		// 			status: TodoItemStatus.done,
+		// 		}
+		// 	]
+		// );
 	}
 
 	function removeItem(itemId: number) {
@@ -47,17 +61,26 @@ export default function TodoListView(props: TodoListViewProps): JSX.Element {
 		);
 	}
 
+	function contentView(): JSX.Element {
+		if (props.signedIn) {
+			if (fetchingTodoItems)
+				return <div className="flex justify-center m-4">
+					<LoadingSpinner xySizeInPx={36} />
+				</div>;
+			else
+				return <TodoList todoItems={todoItems} removeTodoItem={removeItem} />;
+		}
+		else
+			return <div className="text-center mt-5 mb-5">Sign in to start using todo-ls</div>;
+	}
+
 	return (
 		<div className="TodoListView">
 			<div className="flex justify-end mr-5 mt-5">
 				<Button onClick={() => { addItem(); }}>Add item</Button>
 			</div>
-			<div className="border-t border-b border-black border-opacity-20
-				divide-y divide-black divide-opacity-20">
-				{props.signedIn
-					? <TodoList todoItems={todoItems} removeTodoItem={removeItem} />
-					: <div className="text-center mt-5 mb-5">Sign in to start using todo-ls</div>
-				}
+			<div>
+				{contentView()}
 			</div>
 		</div>
 	);
