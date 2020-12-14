@@ -45,8 +45,8 @@ export default function MainContent(): JSX.Element {
 				</a>
 				<div style={{ flex: 1 }}></div>
 				{userInfo
-					? <div className="flex flex-row">
-						<div>
+					? <div className="flex flex-row text-xl">
+						<div className="text-gray-800">
 							{userInfo.username}
 						</div>
 						<div className="text-gray-500">
