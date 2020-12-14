@@ -5,7 +5,7 @@ import { AjaxResponse } from "rxjs/internal/observable/dom/AjaxObservable";
 
 export class HttpClient {
 
-	public static getRequest<T>(route: string, withCredentials = true): Observable<T> {
+	public static getRequest(route: string, withCredentials = true): Observable<AjaxResponse> {
 		return ajax(
 			{
 				url: config.backendUrl + route,
@@ -15,15 +15,14 @@ export class HttpClient {
 					"Content-Type": "application/json",
 				},
 			}
-		) as unknown as Observable<T>;
+		);
 	}
 
 	public static postRequest<BodyParam>(
 		route: string,
 		bodyParam: BodyParam,
 		withCredentials = true
-	)
-		: Observable<AjaxResponse> {
+	): Observable<AjaxResponse> {
 		return ajax(
 			{
 				url: config.backendUrl + route,
@@ -38,7 +37,7 @@ export class HttpClient {
 	}
 
 	/** Health check */
-	public static checkHealth(): Observable<{ status: string }> {
-		return this.getRequest<{ status: string }>("/api/health");
+	public static checkHealth(): Observable<AjaxResponse> {
+		return this.getRequest("/api/health");
 	}
 }

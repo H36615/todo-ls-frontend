@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
 import Button from "../../common/Button/Button";
 import Toast, { ToastProps } from "../../common/Toast/Toast";
 import { config } from "../../config/config";
-import { RootState } from "../../store/store";
+import { IExistingUser } from "../../utils/HttpClient/Interfaces";
+import { TodoItemClient } from "../../utils/HttpClient/TodoItemClient";
 import SignInOrUpModal from "../SignInOrUpModal/SignInOrUpModal";
 import TodoList from "../TodoList/TodoList";
 import "./MainContent.css";
@@ -12,20 +12,21 @@ export default function MainContent(): JSX.Element {
 
 	const [signInOrUpModalOpen, setSignInOrUpModalOpen] = useState<boolean>(false);
 	const [toastProps, setToastProps] = useState<ToastProps>();
+	const [signedIn, setSignedIn] = useState<IExistingUser>();
 
 	/** @param toast toast optional toast on close. */
-	function closeSignInOrUpModal(toast?: ToastProps | undefined): void {
+	function closeSignInOrUpModal(
+		toast: ToastProps | undefined,
+		signedInUser: IExistingUser | undefined
+	): void {
 		if (toast)
 			setToastProps(toast);
 
+		if (signedInUser)
+			setSignedIn(signedInUser);
+
 		setSignInOrUpModalOpen(false);
 	}
-
-	const userSelector = useSelector(
-		(state: RootState) => {
-			return state.user;
-		}
-	);
 
 	return (
 		<div className="MainContent">
@@ -43,13 +44,13 @@ export default function MainContent(): JSX.Element {
 					<p className="bold">Check out the src code</p>
 				</a>
 				<div style={{ flex: 1 }}></div>
-				{userSelector.signedIn
+				{signedIn
 					? <div className="flex flex-row">
 						<div>
-							{userSelector.user?.username}
+							{signedIn.username}
 						</div>
 						<div className="text-gray-500">
-							#{userSelector.user?.tag}
+							#{signedIn.tag}
 						</div>
 					</div>
 					: <div style={{ margin: "10px 0" }}>

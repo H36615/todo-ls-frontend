@@ -4,10 +4,14 @@ import "./SignInOrUpModal.css";
 import SignIn from "./SignIn";
 import SignUp from "./SignUp";
 import Toast, { ToastProps } from "../../common/Toast/Toast";
+import { IExistingUser } from "../../utils/HttpClient/Interfaces";
 
 interface SignInOrUpModalProps {
 	modalOpen: boolean,
-	closeModal: (toast: ToastProps | undefined) => void,
+	closeModal: (
+		toast: ToastProps | undefined,
+		signedInUser: IExistingUser | undefined
+	) => void,
 }
 
 export default function SignInOrUpModal(props: SignInOrUpModalProps): JSX.Element {
@@ -22,16 +26,19 @@ export default function SignInOrUpModal(props: SignInOrUpModalProps): JSX.Elemen
 		setToastProps(toast);
 	}
 
-	function closeModal(toast: ToastProps | undefined): void {
+	function closeModal(
+		toast: ToastProps | undefined,
+		signInUserInfo: IExistingUser | undefined
+	): void {
 		// Little hack to prevent toasting in some cases when reopening this modal
 		setToastProps(undefined);
-		props.closeModal(toast);
+		props.closeModal(toast, signInUserInfo);
 	}
 
 	return (
 		<div className="SignInOrUpModal">
 			<Modal modalOpen={props.modalOpen} header="Sign in / Sign up"
-				onCloseModal={() => closeModal(undefined)}
+				onCloseModal={() => closeModal(undefined, undefined)}
 				closeButtonDisabled={modalButtonsDisabled}>
 
 				{/* Tab buttons */}
@@ -67,14 +74,17 @@ export default function SignInOrUpModal(props: SignInOrUpModalProps): JSX.Elemen
 				{signInEnabled
 					? <>
 						<SignIn
-							closeModal={(toast: ToastProps) => closeModal(toast)}
+							closeModal={(toast: ToastProps, signInUserInfo: IExistingUser) => 
+								closeModal(toast, signInUserInfo)}
 							setModalButtonsDisabled={
 								(disabled: boolean) => setModalButtonsDisabled(disabled)
 							}
 							toast={toast} />
 					</>
 					: <>
-						<SignUp closeModal={(toast: ToastProps) => closeModal(toast)}
+						<SignUp
+							closeModal={(toast: ToastProps) =>
+								closeModal(toast, undefined)}
 							setModalButtonsDisabled={
 								(disabled: boolean) => setModalButtonsDisabled(disabled)
 							}

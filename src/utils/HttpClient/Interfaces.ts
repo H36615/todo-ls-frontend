@@ -1,7 +1,7 @@
 
 // -- Interfaces exported from backend
 
-enum TodoItemStatus {
+export enum TodoItemStatus {
     todo = "todo",
     inProgres = "in_progress",
     done = "done",

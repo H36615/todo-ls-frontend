@@ -4,14 +4,11 @@ import Input from "../../common/Input/Input";
 import Button from "../../common/Button/Button";
 import { UserClient } from "../../utils/HttpClient/UserClient";
 import { ToastProps } from "../../common/Toast/Toast";
-import { store } from "../../store/store";
-import { setUserState } from "../../store/Slices";
-import { tap } from "rxjs/operators";
 import { IExistingUser } from "../../utils/HttpClient/Interfaces";
 import LoadingSpinner from "../../common/LoadingSpinner/LoadingSpinner";
 
 interface LoginProps {
-	closeModal: (toast: ToastProps) => void,
+	closeModal: (toast: ToastProps, signInUserInfo: IExistingUser) => void,
 	setModalButtonsDisabled: (disabled: boolean) => void,
 	toast: (toast: ToastProps) => void,
 }
@@ -43,20 +40,7 @@ export default function SignIn(props: LoginProps): JSX.Element {
 
 	function submitForm(values: FormFields) {
 		props.setModalButtonsDisabled(true);
-
-		return UserClient.signIn(values.email, values.password)
-			.pipe(tap(value => {
-				const userResponse = value.response as IExistingUser;
-				store.dispatch(setUserState(
-					{
-						signedIn: true,
-						user: {
-							username: userResponse.username,
-							tag: userResponse.tag
-						}
-					}
-				));
-			}));
+		return UserClient.signIn(values.email, values.password);
 	}
 
 	return (
@@ -66,8 +50,11 @@ export default function SignIn(props: LoginProps): JSX.Element {
 			onSubmit={(values: FormFields, { setSubmitting }) => {
 				submitForm(values)
 					.subscribe(
-						() => {
-							props.closeModal({ text: "Login success!", type: "success" });
+						ajaxResponse => {
+							props.closeModal(
+								{ text: "Login success!", type: "success" },
+								ajaxResponse.response as IExistingUser,
+							);
 							setSubmitting(false);
 							props.setModalButtonsDisabled(false);
 						},
