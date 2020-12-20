@@ -76,12 +76,15 @@ export default function TodoListView(props: TodoListViewProps): JSX.Element {
 				return <TodoList todoItems={todoItems} removeTodoItem={removeItem} />;
 		}
 		else
-			return <div className="text-center mt-5 mb-5">Sign in to start using todo-ls</div>;
+			return <div className="text-center pt-5 pb-5
+				border-t border-b border-black border-opacity-20">
+				Sign in to start using todo-ls
+			</div>;
 	}
 
 	return (
 		<div className="TodoListView">
-			<div className="flex justify-end mr-5 mt-5">
+			<div className="flex justify-end mr-5 mt-5 mb-5">
 				<Button onClick={() => { addItem(); }} disabled={
 					updatingItem || fetchingTodoItems || !alreadySignedIn
 				}>
