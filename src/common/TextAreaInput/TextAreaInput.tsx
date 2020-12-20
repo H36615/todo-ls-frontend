@@ -20,8 +20,9 @@ export default function TextAreaInput(props: TextAreaInputProps): JSX.Element {
 				// type={props.type || "text"}
 				placeholder={props.placeholder || ""}
 				className={`resize-y h-12 w-300px text-sm
-				bg-white focus:outline-none focus:shadow-outline
-				border rounded-lg
+				bg-gray-300 bg-opacity-5
+				focus:outline-none focus:shadow-outline
+				border-b rounded-sm
 				px-1 block w-full
 				appearance-none leading-normal
 				text-gray-800 placeholder-gray-800

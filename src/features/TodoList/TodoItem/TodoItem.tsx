@@ -45,7 +45,7 @@ export default function TodoItem(props: TodoItemProps): JSX.Element {
 	return (
 		<div className="flex py-1 px-2 flex-row items-center">
 			<ChangeTodoItemStatusButton />
-			<p className="w-20 ml-2 mr-1 text-gray-700">
+			<p className="w-20 ml-2 mr-1 text-gray-500 font-semibold">
 				{getStatusText(props.status)}
 			</p>
 			<div className="flex-1">
