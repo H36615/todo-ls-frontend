@@ -1,6 +1,6 @@
 
 import { Form, Formik } from "formik";
-import React from "react";
+import React, { useState } from "react";
 import Button from "../../../common/Button/Button";
 import IconButton from "../../../common/IconButton/IconButton";
 import TextAreaInput from "../../../common/TextAreaInput/TextAreaInput";
@@ -17,6 +17,8 @@ export interface TodoItemProps {
 }
 
 export default function TodoItem(props: TodoItemProps): JSX.Element {
+
+	const [isDirtyForm, setIsDirtyForm] = useState<boolean>(false);
 
 	function validateFields(fields: { task: string }) {
 		let errors = {};
@@ -53,51 +55,56 @@ export default function TodoItem(props: TodoItemProps): JSX.Element {
 					onSubmit={(values: { task: string }) => {
 						props.submitTaskText(values.task);
 					}}>
-					{({ isValid }) => (
-						<Form>
-							<div className="flex flex-row items-center">
-								<TextAreaInput
-									name="task"
-									type="text"
-									placeholder="" />
-
-								<div className="ml-1">
-									<Button onClick={undefined}
-										disabled={!isValid}
-										type="submit"
-										classNames="
-										whitespace-nowrap
-										w-full px-2
-										rounded-md bg-blue-50 bg-opacity-80
-										hover:bg-blue-100 hover:bg-opacity-80
-										border-blue-200
-										text-blue-800">
-										Save
-									</Button>
-									<Button onClick={undefined}
-										disabled={!isValid}
-										type="submit"
-										classNames="text-xs
-										whitespace-nowrap
-										w-full px-2
-										rounded-md bg-white bg-opacity-80
-										hover:bg-gray-200 hover:bg-opacity-30
-										text-gray-700
-										">
-										Cancel
-									</Button>
+					{({ isValid, dirty, handleReset }) => {
+						setIsDirtyForm(dirty);
+						return (
+							<Form>
+								<div className="flex flex-row items-center">
+									<TextAreaInput
+										name="task"
+										type="text"
+										placeholder="" />
+									{dirty &&
+										<div className="ml-1">
+											<Button onClick={undefined}
+												disabled={!isValid}
+												type="submit"
+												classNames="
+												whitespace-nowrap
+												w-full px-2
+												rounded-md bg-blue-50 bg-opacity-80
+												hover:bg-blue-100 hover:bg-opacity-80
+												border-blue-200
+												text-blue-800">
+												Save
+											</Button>
+											<Button onClick={handleReset}
+												disabled={!isValid}
+												type="submit"
+												classNames="text-xs
+												whitespace-nowrap
+												w-full px-2
+												rounded-md bg-white bg-opacity-80
+												hover:bg-gray-200 hover:bg-opacity-30
+												text-gray-700
+												">
+												Cancel
+											</Button>
+										</div>
+									}
 								</div>
-							</div>
-						</Form>
-					)}
+							</Form>
+						);
+					}}
 				</Formik>
 			</div>
-
-			<div className="flex items-center ml-1">
-				<IconButton onClick={props.onRemove}>
-					<DeleteIcon />
-				</IconButton>
-			</div>
+			{!isDirtyForm &&
+				<div className="flex items-center ml-1">
+					<IconButton onClick={props.onRemove}>
+						<DeleteIcon />
+					</IconButton>
+				</div>
+			}
 		</div >
 	);
 }
