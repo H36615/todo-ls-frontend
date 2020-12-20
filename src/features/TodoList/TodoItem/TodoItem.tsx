@@ -43,7 +43,9 @@ export default function TodoItem(props: TodoItemProps): JSX.Element {
 	return (
 		<div className="flex py-1 px-2 flex-row items-center">
 			<ChangeTodoItemStatusButton />
-			<p className="w-20 ml-2 mr-1">{getStatusText(props.status)}</p>
+			<p className="w-20 ml-2 mr-1 text-gray-700">
+				{getStatusText(props.status)}
+			</p>
 			<div className="flex-1">
 				<Formik
 					initialValues={{ task: "" } as { task: string }}
@@ -59,16 +61,17 @@ export default function TodoItem(props: TodoItemProps): JSX.Element {
 									type="text"
 									placeholder="" />
 
-								<div className="mx-1">
+								<div className="ml-1">
 									<Button onClick={undefined}
 										disabled={!isValid}
 										type="submit"
 										classNames="
 										whitespace-nowrap
 										w-full px-2
-										rounded-md bg-blue-100 bg-opacity-80
-										hover:bg-blue-200 hover:bg-opacity-80
-										border-blue-200 text-blue-800">
+										rounded-md bg-blue-50 bg-opacity-80
+										hover:bg-blue-100 hover:bg-opacity-80
+										border-blue-200
+										text-blue-800">
 										Save
 									</Button>
 									<Button onClick={undefined}
@@ -79,6 +82,7 @@ export default function TodoItem(props: TodoItemProps): JSX.Element {
 										w-full px-2
 										rounded-md bg-white bg-opacity-80
 										hover:bg-gray-200 hover:bg-opacity-30
+										text-gray-700
 										">
 										Cancel
 									</Button>
@@ -89,7 +93,7 @@ export default function TodoItem(props: TodoItemProps): JSX.Element {
 				</Formik>
 			</div>
 
-			<div className="flex items-center">
+			<div className="flex items-center ml-1">
 				<IconButton onClick={props.onRemove}>
 					<DeleteIcon />
 				</IconButton>
