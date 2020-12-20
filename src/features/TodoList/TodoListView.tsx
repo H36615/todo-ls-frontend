@@ -57,6 +57,10 @@ export default function TodoListView(props: TodoListViewProps): JSX.Element {
 		);
 	}
 
+	function updateItemTask(itemId: number, task: string) {
+		console.log(itemId, task);
+	}
+
 	function removeItem(itemId: number) {
 		// TODO Implement
 		// setTodoItems(
@@ -73,7 +77,8 @@ export default function TodoListView(props: TodoListViewProps): JSX.Element {
 					<LoadingSpinner xySizeInPx={36} />
 				</div>;
 			else
-				return <TodoList todoItems={todoItems} removeTodoItem={removeItem} />;
+				return <TodoList todoItems={todoItems} removeTodoItem={removeItem}
+					submitTaskText={updateItemTask} />;
 		}
 		else
 			return <div className="text-center pt-5 pb-5

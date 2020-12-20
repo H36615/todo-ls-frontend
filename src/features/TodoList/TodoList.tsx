@@ -6,6 +6,7 @@ import "./TodoList.css";
 interface TodoListProps {
 	todoItems: IExistingTodoItem[],
 	removeTodoItem: (itemId: number) => void,
+	submitTaskText: (id: number, text: string) => void,
 }
 
 export default function TodoList(props: TodoListProps): JSX.Element {
@@ -14,9 +15,10 @@ export default function TodoList(props: TodoListProps): JSX.Element {
 			border-t border-b border-black border-opacity-20">
 			{props.todoItems && props.todoItems.length > 0 && props.todoItems.map((todoItem) =>
 				<TodoItem key={todoItem.id} status={todoItem.status}
-					onRemove={() => props.removeTodoItem(todoItem.id)}>
-					{todoItem.task}
-				</TodoItem>
+					onRemove={() => props.removeTodoItem(todoItem.id)}
+					taskText={todoItem.task}
+					id={todoItem.id}
+					submitTaskText={(text: string) => props.submitTaskText(todoItem.id, text)}/>
 			)}
 		</div>
 	);
