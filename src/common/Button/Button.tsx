@@ -11,7 +11,7 @@ interface ButtonProps {
 
 export default function Button(props: ButtonProps): JSX.Element {
 	return (
-		<div className="BasicButton">
+		<div className="Button">
 			<button
 				disabled={props.disabled}
 				type={props.type || undefined}

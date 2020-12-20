@@ -59,23 +59,27 @@ export default function TodoItem(props: TodoItemProps): JSX.Element {
 						setIsDirtyForm(dirty);
 						return (
 							<Form>
-								<div className="flex flex-row items-center">
-									<TextAreaInput
-										name="task"
-										type="text"
-										placeholder="" />
+								<div style={{ minHeight: "4rem" }}
+									className="flex flex-row items-center">
+									<div className="flex-1">
+										<TextAreaInput
+											name="task"
+											type="text"
+											placeholder="" />
+									</div>
 									{dirty &&
-										<div className="ml-1">
+										<div className="ml-1 w-14">
 											<Button onClick={undefined}
 												disabled={!isValid}
 												type="submit"
-												classNames="
+												classNames={`
 												whitespace-nowrap
 												w-full px-2
 												rounded-md bg-blue-50 bg-opacity-80
-												hover:bg-blue-100 hover:bg-opacity-80
 												border-blue-200
-												text-blue-800">
+												text-blue-800
+								${!isValid ? "opacity-50" : "hover:bg-blue-100 hover:bg-opacity-80"}
+												m-0`}>
 												Save
 											</Button>
 											<Button onClick={handleReset}
@@ -87,7 +91,7 @@ export default function TodoItem(props: TodoItemProps): JSX.Element {
 												rounded-md bg-white bg-opacity-80
 												hover:bg-gray-200 hover:bg-opacity-30
 												text-gray-700
-												">
+												m-0">
 												Cancel
 											</Button>
 										</div>
@@ -99,7 +103,7 @@ export default function TodoItem(props: TodoItemProps): JSX.Element {
 				</Formik>
 			</div>
 			{!isDirtyForm &&
-				<div className="flex items-center ml-1">
+				<div className="flex items-center justify-end ml-1 w-14">
 					<IconButton onClick={props.onRemove}>
 						<DeleteIcon />
 					</IconButton>
