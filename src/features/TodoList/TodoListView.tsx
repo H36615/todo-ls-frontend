@@ -61,6 +61,17 @@ export default function TodoListView(props: TodoListViewProps): JSX.Element {
 		console.log(itemId, task);
 	}
 
+	function updateItemStatus(itemId: number, newStatus: TodoItemStatus) {
+		const tmpItems = todoItems.slice();
+		const foundItem = tmpItems.find(item => item.id === itemId);
+		if (foundItem)
+			foundItem.status = newStatus;
+
+		setTodoItems(
+			tmpItems
+		);
+	}
+
 	function removeItem(itemId: number) {
 		// TODO Implement
 		// setTodoItems(
@@ -78,7 +89,7 @@ export default function TodoListView(props: TodoListViewProps): JSX.Element {
 				</div>;
 			else
 				return <TodoList todoItems={todoItems} removeTodoItem={removeItem}
-					submitTaskText={updateItemTask} />;
+					submitTaskText={updateItemTask} statusChanged={updateItemStatus} />;
 		}
 		else
 			return <div className="text-center pt-5 pb-5

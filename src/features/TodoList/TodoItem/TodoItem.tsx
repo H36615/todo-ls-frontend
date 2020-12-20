@@ -1,6 +1,8 @@
 
 import { Form, Formik } from "formik";
 import React, { useState } from "react";
+import { of, Subscription } from "rxjs";
+import { delay } from "rxjs/operators";
 import Button from "../../../common/Button/Button";
 import IconButton from "../../../common/IconButton/IconButton";
 import TextAreaInput from "../../../common/TextAreaInput/TextAreaInput";
@@ -12,6 +14,7 @@ export interface TodoItemProps {
 	id: number,
 	taskText: string,
 	status: TodoItemStatus,
+	statusChanged: (newStatus: TodoItemStatus) => void,
 	onRemove: () => void,
 	submitTaskText: (text: string) => void,
 }
@@ -19,6 +22,10 @@ export interface TodoItemProps {
 export default function TodoItem(props: TodoItemProps): JSX.Element {
 
 	const [isDirtyForm, setIsDirtyForm] = useState<boolean>(false);
+	const [currentOrPendingStatus, setCurrentOrPendingStatus]
+		= useState<TodoItemStatus>(props.status);
+	const [fetchingStatus, setFetchingStatus] = useState<boolean>(false);
+	const [fetchSubscription, setFetchSubscription] = useState<Subscription>();
 
 	function validateFields(fields: { task: string }) {
 		let errors = {};
@@ -42,9 +49,55 @@ export default function TodoItem(props: TodoItemProps): JSX.Element {
 		return "undefined";
 	}
 
+	function getNextStatus(currentStatus: TodoItemStatus) {
+		if (currentStatus === TodoItemStatus.todo)
+			return TodoItemStatus.inProgres;
+		if (currentStatus === TodoItemStatus.inProgres)
+			return TodoItemStatus.done;
+		if (currentStatus === TodoItemStatus.done)
+			return TodoItemStatus.delayed;
+		return TodoItemStatus.todo;
+	}
+
+	function nextStatus() {
+		setFetchingStatus(true);
+
+		const nextStatus = getNextStatus(currentOrPendingStatus);
+		setCurrentOrPendingStatus(nextStatus);
+
+		if (fetchSubscription)
+			fetchSubscription.unsubscribe();
+
+		const extraWaitingTimeInMillis = 500;
+		setFetchSubscription(
+			// TODO implement
+			of(nextStatus)
+				.pipe(
+					// Set user to wait a little before sending the request,
+					// as the user might spam the status change thus reducing
+					// server load.
+					delay(extraWaitingTimeInMillis),
+				)
+				.subscribe(
+					(value: TodoItemStatus) => {
+						setFetchingStatus(false);
+						props.statusChanged(value);
+					},
+					() => {
+						// TODO handle
+						setFetchingStatus(false);
+						setCurrentOrPendingStatus(props.status);
+					}
+				)
+		);
+	}
+
 	return (
 		<div className="flex py-1 px-2 flex-row items-center">
-			<ChangeTodoItemStatusButton />
+			<ChangeTodoItemStatusButton status={props.status}
+				nextStatus={nextStatus}
+				currentOrPendingStatus={currentOrPendingStatus}
+				fetchingStatus={fetchingStatus} />
 			<p className="w-20 ml-2 mr-1 text-gray-500 font-semibold">
 				{getStatusText(props.status)}
 			</p>
