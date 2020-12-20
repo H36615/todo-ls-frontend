@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Button from "../../common/Button/Button";
+import BasicButton from "../../common/BasicButton/BasicButton";
 import LoadingSpinner from "../../common/LoadingSpinner/LoadingSpinner";
 import { IExistingTodoItem, TodoItemStatus } from "../../utils/HttpClient/Interfaces";
 import { TodoItemClient } from "../../utils/HttpClient/TodoItemClient";
@@ -85,11 +85,11 @@ export default function TodoListView(props: TodoListViewProps): JSX.Element {
 	return (
 		<div className="TodoListView">
 			<div className="flex justify-end mr-5 mt-5 mb-5">
-				<Button onClick={() => { addItem(); }} disabled={
+				<BasicButton onClick={() => { addItem(); }} disabled={
 					updatingItem || fetchingTodoItems || !alreadySignedIn
 				}>
 					Add item
-				</Button>
+				</BasicButton>
 			</div>
 			<div>
 				{contentView()}

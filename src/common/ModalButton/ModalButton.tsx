@@ -1,5 +1,5 @@
 import React from "react";
-import Button from "../Button/Button";
+import BasicButton from "../BasicButton/BasicButton";
 
 interface ModalButtonProps {
 	press: () => void,
@@ -10,11 +10,11 @@ interface ModalButtonProps {
 /** Like button, but with some fixed styling values & irrelevant parts excluded. */
 export default function ModalButton(props: ModalButtonProps): JSX.Element {
 	return (
-		<Button onClick={props.press}
+		<BasicButton onClick={props.press}
 			disabled={props.disabled}
 			type="button"
 			classNames="px-4 py-2">
 			{props.children}
-		</Button>
+		</BasicButton>
 	);
 }

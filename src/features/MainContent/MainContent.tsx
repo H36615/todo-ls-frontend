@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Button from "../../common/Button/Button";
+import BasicButton from "../../common/BasicButton/BasicButton";
 import Toast, { ToastProps } from "../../common/Toast/Toast";
 import { config } from "../../config/config";
 import { IExistingUser } from "../../utils/HttpClient/Interfaces";
@@ -54,9 +54,9 @@ export default function MainContent(): JSX.Element {
 						</div>
 					</div>
 					: <div style={{ margin: "10px 0" }}>
-						<Button onClick={() => setSignInOrUpModalOpen(true)}>
+						<BasicButton onClick={() => setSignInOrUpModalOpen(true)}>
 							Sign in / Sign up
-						</Button>
+						</BasicButton>
 					</div>
 				}
 			</div>

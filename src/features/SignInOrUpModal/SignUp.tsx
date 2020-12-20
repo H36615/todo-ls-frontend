@@ -1,7 +1,7 @@
 import React from "react";
 import { Formik, Form } from "formik";
 import Input from "../../common/Input/Input";
-import Button from "../../common/Button/Button";
+import BasicButton from "../../common/BasicButton/BasicButton";
 import { UserClient } from "../../utils/HttpClient/UserClient";
 import { Observable } from "rxjs";
 import { ToastProps } from "../../common/Toast/Toast";
@@ -98,11 +98,11 @@ export default function SignUp(props: SignUpProps): JSX.Element {
 						name="password" />
 
 					<div className="flex flex-row items-center">
-						<Button onClick={undefined}
+						<BasicButton onClick={undefined}
 							disabled={isSubmitting || !isValid}
 							type="submit">
 							Sign up
-						</Button>
+						</BasicButton>
 						{isSubmitting &&
 							<div className="ml-4">
 								<LoadingSpinner />

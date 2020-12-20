@@ -11,17 +11,15 @@ interface ButtonProps {
 
 export default function Button(props: ButtonProps): JSX.Element {
 	return (
-		<div className="Button">
+		<div className="BasicButton">
 			<button
 				disabled={props.disabled}
 				type={props.type || undefined}
-				className={`items-center rounded-md
-				text-gray-700 bg-white bg-opacity-80
-				px-3 py-1 border border-gray-300
+				className={`items-center
+				bg-opacity-80
+				border border-gray-300
 				focus:outline-none
-				border ${props.disabled ? "opacity-50" : "hover:bg-gray-200 hover:bg-opacity-30"}
 				${props.classNames}`}
-				style={{ minWidth: "10px" }}
 				onClick={props.onClick}>
 				<p className="bold">{props.children}</p>
 			</button>
