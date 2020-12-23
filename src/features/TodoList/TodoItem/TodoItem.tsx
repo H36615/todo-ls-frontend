@@ -9,6 +9,7 @@ import TextAreaInput from "../../../common/TextAreaInput/TextAreaInput";
 import DeleteIcon from "../../../icons/DeleteIcon";
 import { TodoItemStatus } from "../../../utils/HttpClient/Interfaces";
 import ChangeTodoItemStatusButton from "./ChangeTodoItemStatusButton";
+import SelectTodoItemStatusDropdownButton from "./SelectTodoItemStatusDropdownButton";
 
 export interface TodoItemProps {
 	id: number,
@@ -35,18 +36,6 @@ export default function TodoItem(props: TodoItemProps): JSX.Element {
 			errors = { ...errors, task: "Task must be less than 100 characters" };
 
 		return errors;
-	}
-
-	function getStatusText(status: TodoItemStatus) {
-		if (status === TodoItemStatus.todo)
-			return "To do";
-		if (status === TodoItemStatus.done)
-			return "Done";
-		if (status === TodoItemStatus.inProgres)
-			return "In progress";
-		if (status === TodoItemStatus.delayed)
-			return "Delayed";
-		return "undefined";
 	}
 
 	function getNextStatus(currentStatus: TodoItemStatus) {
@@ -98,9 +87,13 @@ export default function TodoItem(props: TodoItemProps): JSX.Element {
 				nextStatus={nextStatus}
 				currentOrPendingStatus={currentOrPendingStatus}
 				fetchingStatus={fetchingStatus} />
-			<p className="w-20 ml-2 mr-1 text-gray-500 font-semibold">
-				{getStatusText(props.status)}
-			</p>
+
+			<SelectTodoItemStatusDropdownButton status={props.status}
+				nextStatus={nextStatus}
+				currentOrPendingStatus={currentOrPendingStatus}
+				fetchingStatus={fetchingStatus}
+			/>
+
 			<div className="flex-1">
 				<Formik
 					initialValues={{ task: "" } as { task: string }}

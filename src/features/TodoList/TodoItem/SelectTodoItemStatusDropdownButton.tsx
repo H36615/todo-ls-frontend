@@ -1,0 +1,94 @@
+import React from "react";
+import Dropdown from "../../../common/Dropdown/Dropdown";
+import { TodoItemStatus } from "../../../utils/HttpClient/Interfaces";
+
+export interface SelectTodoItemStatusDropdownButtonProps {
+	status: TodoItemStatus,
+	/**
+	 * The status the user is trying to change the status to, but might
+	 * have not been succeeded yet so.
+	 */
+	currentOrPendingStatus: TodoItemStatus,
+	fetchingStatus: boolean,
+	nextStatus: () => void,
+	disabled?: boolean,
+}
+
+export default function SelectTodoItemStatusDropdownButton(
+	props: SelectTodoItemStatusDropdownButtonProps
+): JSX.Element {
+
+	function selectionChange(option: TodoItemStatus) {
+		console.log("changed to ", option);
+	}
+
+	function getStatusText(status: TodoItemStatus) {
+		if (status === TodoItemStatus.todo)
+			return "To do";
+		if (status === TodoItemStatus.done)
+			return "Done";
+		if (status === TodoItemStatus.inProgres)
+			return "In progress";
+		if (status === TodoItemStatus.delayed)
+			return "Delayed";
+		return "undefined";
+	}
+
+	function getStatusTextColor() {
+		if (props.currentOrPendingStatus === TodoItemStatus.todo)
+			return "text-pink-800";
+		if (props.currentOrPendingStatus === TodoItemStatus.inProgres)
+			return "text-blue-800";
+		if (props.currentOrPendingStatus === TodoItemStatus.done)
+			return "text-green-800";
+		return "text-yellow-800";
+	}
+
+	function getStatusColorRules() {
+		if (props.currentOrPendingStatus === TodoItemStatus.todo)
+			return "bg-pink-500";
+		if (props.currentOrPendingStatus === TodoItemStatus.inProgres)
+			return "bg-blue-500";
+		if (props.currentOrPendingStatus === TodoItemStatus.done)
+			return "bg-green-500";
+		return "bg-yellow-500";
+	}
+
+	return (
+		<div className="flex flex-col">
+			<Dropdown<TodoItemStatus>
+				buttonText={getStatusText(props.status)}
+				selectionChange={selectionChange}
+				buttonClassesNames={`
+				w-16 ml-2 mr-1 font-semibold
+				rounded-lg
+				${getStatusTextColor()}
+				mx-1
+				focus:outline-none
+				${props.disabled && "opacity-30"}
+				${getStatusColorRules()}
+				bg-opacity-0 hover:bg-opacity-10`}
+				dropdownOptions={
+					[
+						{
+							option: getStatusText(TodoItemStatus.todo),
+							value: TodoItemStatus.todo
+						},
+						{
+							option: getStatusText(TodoItemStatus.inProgres),
+							value: TodoItemStatus.inProgres
+						},
+						{
+							option: getStatusText(TodoItemStatus.done),
+							value: TodoItemStatus.done
+						},
+						{
+							option: getStatusText(TodoItemStatus.delayed),
+							value: TodoItemStatus.delayed
+						},
+					]
+				}
+			/>
+		</div>
+	);
+}

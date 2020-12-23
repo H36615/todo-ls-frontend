@@ -46,7 +46,7 @@ export default function ChangeTodoItemStatusButton(
 			<button
 				disabled={props.disabled}
 				className={`
-				items-center mx-auto flex-shrink-0 flex items-center
+				items-center mx-auto flex-shrink-0 flex
 				justify-center h-10 w-10
 				focus:outline-none
 				${props.disabled && "opacity-30"}
