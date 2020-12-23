@@ -16,10 +16,10 @@ export default function IconButton(props: IconButtonProps): JSX.Element {
 				disabled={props.disabled}
 				type={props.type || undefined}
 				className={`items-center mx-auto flex-shrink-0 flex items-center
-				justify-center h-12 w-12 rounded-full bg-red-500 bg-opacity-10
+				justify-center h-12 w-12 rounded-full bg-red-700 bg-opacity-0
 				focus:outline-none
 				sm:mx-0 sm:h-10 sm:w-10
-				${props.disabled ? "" : "hover:bg-opacity-30"}`}
+				${props.disabled ? "" : "hover:bg-opacity-10"}`}
 				style={{ minWidth: "10px" }}
 				onClick={props.onClick}>
 				{props.children}
