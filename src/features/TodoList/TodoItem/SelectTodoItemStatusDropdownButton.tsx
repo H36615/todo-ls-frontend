@@ -10,17 +10,13 @@ export interface SelectTodoItemStatusDropdownButtonProps {
 	 */
 	currentOrPendingStatus: TodoItemStatus,
 	fetchingStatus: boolean,
-	nextStatus: () => void,
+	changeStatus: (option: TodoItemStatus) => void,
 	disabled?: boolean,
 }
 
 export default function SelectTodoItemStatusDropdownButton(
 	props: SelectTodoItemStatusDropdownButtonProps
 ): JSX.Element {
-
-	function selectionChange(option: TodoItemStatus) {
-		console.log("changed to ", option);
-	}
 
 	function getStatusText(status: TodoItemStatus) {
 		if (status === TodoItemStatus.todo)
@@ -58,7 +54,7 @@ export default function SelectTodoItemStatusDropdownButton(
 		<div className="flex flex-col">
 			<Dropdown<TodoItemStatus>
 				buttonText={getStatusText(props.status)}
-				selectionChange={selectionChange}
+				selectionChange={props.changeStatus}
 				buttonClassesNames={`
 				w-16 ml-2 mr-1 font-semibold
 				rounded-lg

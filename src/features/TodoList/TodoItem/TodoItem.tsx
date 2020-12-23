@@ -15,7 +15,7 @@ export interface TodoItemProps {
 	id: number,
 	taskText: string,
 	status: TodoItemStatus,
-	statusChanged: (newStatus: TodoItemStatus) => void,
+	changeStatus: (newStatus: TodoItemStatus) => void,
 	onRemove: () => void,
 	submitTaskText: (text: string) => void,
 }
@@ -48,11 +48,12 @@ export default function TodoItem(props: TodoItemProps): JSX.Element {
 		return TodoItemStatus.todo;
 	}
 
-	function nextStatus() {
-		setFetchingStatus(true);
+	function updateStatus(newStatus: TodoItemStatus) {
+		if (currentOrPendingStatus === newStatus)
+			return;
 
-		const nextStatus = getNextStatus(currentOrPendingStatus);
-		setCurrentOrPendingStatus(nextStatus);
+		setFetchingStatus(true);
+		setCurrentOrPendingStatus(newStatus);
 
 		if (fetchSubscription)
 			fetchSubscription.unsubscribe();
@@ -60,7 +61,7 @@ export default function TodoItem(props: TodoItemProps): JSX.Element {
 		const extraWaitingTimeInMillis = 500;
 		setFetchSubscription(
 			// TODO implement
-			of(nextStatus)
+			of(newStatus)
 				.pipe(
 					// Set user to wait a little before sending the request,
 					// as the user might spam the status change thus reducing
@@ -70,7 +71,7 @@ export default function TodoItem(props: TodoItemProps): JSX.Element {
 				.subscribe(
 					(value: TodoItemStatus) => {
 						setFetchingStatus(false);
-						props.statusChanged(value);
+						props.changeStatus(value);
 					},
 					() => {
 						// TODO handle
@@ -78,6 +79,12 @@ export default function TodoItem(props: TodoItemProps): JSX.Element {
 						setCurrentOrPendingStatus(props.status);
 					}
 				)
+		);
+	}
+
+	function nextStatus() {
+		updateStatus(
+			getNextStatus(currentOrPendingStatus)
 		);
 	}
 
@@ -89,7 +96,7 @@ export default function TodoItem(props: TodoItemProps): JSX.Element {
 				fetchingStatus={fetchingStatus} />
 
 			<SelectTodoItemStatusDropdownButton status={props.status}
-				nextStatus={nextStatus}
+				changeStatus={updateStatus}
 				currentOrPendingStatus={currentOrPendingStatus}
 				fetchingStatus={fetchingStatus}
 			/>

@@ -20,7 +20,7 @@ export default function TodoList(props: TodoListProps): JSX.Element {
 					taskText={todoItem.task}
 					id={todoItem.id}
 					submitTaskText={(text: string) => props.submitTaskText(todoItem.id, text)}
-					statusChanged={
+					changeStatus={
 						(newStatus: TodoItemStatus) => props.statusChanged(todoItem.id, newStatus)
 					}
 				/>
