@@ -73,12 +73,11 @@ export default function TodoListView(props: TodoListViewProps): JSX.Element {
 	}
 
 	function removeItem(itemId: number) {
-		// TODO Implement
-		// setTodoItems(
-		// 	todoItems
-		// 		.slice()
-		// 		.filter(item => item.id !== itemId)
-		// );
+		setTodoItems(
+			todoItems
+				.slice()
+				.filter(item => item.id !== itemId)
+		);
 	}
 
 	function contentView(): JSX.Element {

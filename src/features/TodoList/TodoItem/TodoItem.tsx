@@ -26,6 +26,7 @@ export default function TodoItem(props: TodoItemProps): JSX.Element {
 		= useState<TodoItemStatus>(props.todoItem.status);
 	const [fetchingStatus, setFetchingStatus] = useState<boolean>(false);
 	const [fetchSubscription, setFetchSubscription] = useState<Subscription>();
+	const [deletingTodoItem, setDeletingTodoItem] = useState<boolean>(false);
 
 	function validateFields(fields: { task: string }) {
 		let errors = {};
@@ -86,6 +87,24 @@ export default function TodoItem(props: TodoItemProps): JSX.Element {
 		updateStatus(
 			getNextStatus(currentOrPendingStatus)
 		);
+	}
+
+	function deleteItem(item: Pick<IExistingTodoItem, "id">) {
+		if (!deletingTodoItem) {
+			setDeletingTodoItem(true);
+			// TODO set other deletes disabled during this deletion.
+			TodoItemClient.deleteTodoItem(item)
+				.subscribe(
+					() => {
+						setDeletingTodoItem(false);
+						props.onRemove();
+					},
+					() => {
+						// TODO handle error
+						setDeletingTodoItem(false);
+					}
+				);
+		}
 	}
 
 	return (
@@ -157,7 +176,7 @@ export default function TodoItem(props: TodoItemProps): JSX.Element {
 			</div>
 			{!isDirtyForm &&
 				<div className="flex items-center justify-end ml-1 w-14">
-					<IconButton onClick={props.onRemove}>
+					<IconButton onClick={() => deleteItem({ id: props.todoItem.id })}>
 						<DeleteIcon />
 					</IconButton>
 				</div>
