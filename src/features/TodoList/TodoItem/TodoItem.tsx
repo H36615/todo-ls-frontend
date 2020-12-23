@@ -122,7 +122,7 @@ export default function TodoItem(props: TodoItemProps): JSX.Element {
 
 			<div className="flex-1">
 				<Formik
-					initialValues={{ task: "" } as { task: string }}
+					initialValues={{ task: props.todoItem.task } as { task: string }}
 					validate={(values: { task: string }) => validateFields(values)}
 					onSubmit={(values: { task: string }) => {
 						props.submitTaskText(values.task);
@@ -155,7 +155,6 @@ export default function TodoItem(props: TodoItemProps): JSX.Element {
 												Save
 											</Button>
 											<Button onClick={handleReset}
-												disabled={!isValid}
 												type="submit"
 												classNames="text-xs
 												whitespace-nowrap
