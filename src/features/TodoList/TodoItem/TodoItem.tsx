@@ -1,20 +1,19 @@
 
 import { Form, Formik } from "formik";
 import React, { useState } from "react";
-import { of, Subscription } from "rxjs";
+import { Subscription } from "rxjs";
 import { delay } from "rxjs/operators";
 import Button from "../../../common/Button/Button";
 import IconButton from "../../../common/IconButton/IconButton";
 import TextAreaInput from "../../../common/TextAreaInput/TextAreaInput";
 import DeleteIcon from "../../../icons/DeleteIcon";
-import { TodoItemStatus } from "../../../utils/HttpClient/Interfaces";
+import { IExistingTodoItem, TodoItemStatus } from "../../../utils/HttpClient/Interfaces";
+import { TodoItemClient } from "../../../utils/HttpClient/TodoItemClient";
 import ChangeTodoItemStatusButton from "./ChangeTodoItemStatusButton";
 import SelectTodoItemStatusDropdownButton from "./SelectTodoItemStatusDropdownButton";
 
 export interface TodoItemProps {
-	id: number,
-	taskText: string,
-	status: TodoItemStatus,
+	todoItem: IExistingTodoItem,
 	changeStatus: (newStatus: TodoItemStatus) => void,
 	onRemove: () => void,
 	submitTaskText: (text: string) => void,
@@ -24,7 +23,7 @@ export default function TodoItem(props: TodoItemProps): JSX.Element {
 
 	const [isDirtyForm, setIsDirtyForm] = useState<boolean>(false);
 	const [currentOrPendingStatus, setCurrentOrPendingStatus]
-		= useState<TodoItemStatus>(props.status);
+		= useState<TodoItemStatus>(props.todoItem.status);
 	const [fetchingStatus, setFetchingStatus] = useState<boolean>(false);
 	const [fetchSubscription, setFetchSubscription] = useState<Subscription>();
 
@@ -59,9 +58,10 @@ export default function TodoItem(props: TodoItemProps): JSX.Element {
 			fetchSubscription.unsubscribe();
 
 		const extraWaitingTimeInMillis = 500;
+		const newTodoItem = { ...props.todoItem, status: newStatus };
+
 		setFetchSubscription(
-			// TODO implement
-			of(newStatus)
+			TodoItemClient.updateTodoItem(newTodoItem)
 				.pipe(
 					// Set user to wait a little before sending the request,
 					// as the user might spam the status change thus reducing
@@ -69,14 +69,14 @@ export default function TodoItem(props: TodoItemProps): JSX.Element {
 					delay(extraWaitingTimeInMillis),
 				)
 				.subscribe(
-					(value: TodoItemStatus) => {
+					() => {
 						setFetchingStatus(false);
-						props.changeStatus(value);
+						props.changeStatus(newStatus);
 					},
 					() => {
 						// TODO handle
 						setFetchingStatus(false);
-						setCurrentOrPendingStatus(props.status);
+						setCurrentOrPendingStatus(props.todoItem.status);
 					}
 				)
 		);
@@ -90,12 +90,12 @@ export default function TodoItem(props: TodoItemProps): JSX.Element {
 
 	return (
 		<div className="flex py-1 px-2 flex-row items-center">
-			<ChangeTodoItemStatusButton status={props.status}
+			<ChangeTodoItemStatusButton status={props.todoItem.status}
 				nextStatus={nextStatus}
 				currentOrPendingStatus={currentOrPendingStatus}
 				fetchingStatus={fetchingStatus} />
 
-			<SelectTodoItemStatusDropdownButton status={props.status}
+			<SelectTodoItemStatusDropdownButton status={props.todoItem.status}
 				changeStatus={updateStatus}
 				currentOrPendingStatus={currentOrPendingStatus}
 				fetchingStatus={fetchingStatus}

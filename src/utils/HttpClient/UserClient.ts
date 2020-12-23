@@ -7,6 +7,8 @@ export class UserClient extends HttpClient {
 
 	private static readonly routePrefix = "/api";
 
+	// TODO fix return type, check TodoItemClient.
+
 	public static signIn(email: string, password: string): Observable<AjaxResponse> {
 		return this.postRequest<{ email: string, password: string }>(
 			this.routePrefix + "/login",

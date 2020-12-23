@@ -21,12 +21,13 @@ export class HttpClient {
 	public static postRequest<BodyParam>(
 		route: string,
 		bodyParam: BodyParam,
+		method = "POST",
 		withCredentials = true
 	): Observable<AjaxResponse> {
 		return ajax(
 			{
 				url: config.backendUrl + route,
-				method: "POST",
+				method: method,
 				body: bodyParam,
 				withCredentials: withCredentials,
 				headers: {
@@ -34,6 +35,14 @@ export class HttpClient {
 				}
 			}
 		);
+	}
+
+	public static putRequest<BodyParam>(
+		route: string,
+		bodyParam: BodyParam,
+		withCredentials = true
+	): Observable<AjaxResponse> {
+		return this.postRequest(route, bodyParam, "PUT", withCredentials);
 	}
 
 	/** Health check */

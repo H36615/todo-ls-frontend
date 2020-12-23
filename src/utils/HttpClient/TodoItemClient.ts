@@ -16,4 +16,9 @@ export class TodoItemClient extends HttpClient {
 		return this.postRequest(this.routePrefix + "/add", todoItem)
 			.pipe(map(response => response.response as unknown));
 	}
+
+	public static updateTodoItem(todoItem: Omit<INewTodoItem, "user_id">): Observable<unknown> {
+		return this.putRequest(this.routePrefix + "/update", todoItem)
+			.pipe(map(response => response.response as unknown));
+	}
 }
