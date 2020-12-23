@@ -16,6 +16,7 @@ export default function TextAreaInput(props: TextAreaInputProps): JSX.Element {
 	return (
 		<div className="w-full">
 			<textarea {...field}
+				spellCheck="false"
 				name={props.name}
 				className={`resize-y h-12 w-300px text-sm
 				bg-gray-300 bg-opacity-5
