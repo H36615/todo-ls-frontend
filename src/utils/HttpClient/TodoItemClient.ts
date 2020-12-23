@@ -12,13 +12,24 @@ export class TodoItemClient extends HttpClient {
 			.pipe(map(response => response.response as IExistingTodoItem[]));
 	}
 
-	public static addTodoItem(todoItem: Omit<INewTodoItem, "user_id">): Observable<unknown> {
+	public static addTodoItem(
+		todoItem: Omit<INewTodoItem, "user_id">
+	): Observable<unknown> {
 		return this.postRequest(this.routePrefix + "/add", todoItem)
 			.pipe(map(response => response.response as unknown));
 	}
 
-	public static updateTodoItem(todoItem: Omit<INewTodoItem, "user_id">): Observable<unknown> {
+	public static updateTodoItem(
+		todoItem: Omit<IExistingTodoItem, "user_id">
+	): Observable<unknown> {
 		return this.putRequest(this.routePrefix + "/update", todoItem)
+			.pipe(map(response => response.response as unknown));
+	}
+
+	public static deleteTodoItem(
+		todoItem: Pick<IExistingTodoItem, "id">
+	): Observable<unknown> {
+		return this.deleteRequest(this.routePrefix + "/one", todoItem)
 			.pipe(map(response => response.response as unknown));
 	}
 }

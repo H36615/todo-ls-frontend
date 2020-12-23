@@ -45,6 +45,14 @@ export class HttpClient {
 		return this.postRequest(route, bodyParam, "PUT", withCredentials);
 	}
 
+	public static deleteRequest<BodyParam>(
+		route: string,
+		bodyParam: BodyParam,
+		withCredentials = true
+	): Observable<AjaxResponse> {
+		return this.postRequest(route, bodyParam, "DELETE", withCredentials);
+	}
+
 	/** Health check */
 	public static checkHealth(): Observable<AjaxResponse> {
 		return this.getRequest("/api/health");
