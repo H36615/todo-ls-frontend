@@ -1,7 +1,7 @@
 
 import { Form, Formik } from "formik";
 import React, { useState } from "react";
-import { Subscription } from "rxjs";
+import { Observable, Subscription } from "rxjs";
 import { delay } from "rxjs/operators";
 import IconButton from "../../../common/IconButton/IconButton";
 import TextAreaInput from "../../../common/TextAreaInput/TextAreaInput";
@@ -15,18 +15,19 @@ import TaskActionButtons from "./TaskActionButtons";
 export interface TodoItemProps {
 	todoItem: IExistingTodoItem,
 	changeStatus: (newStatus: TodoItemStatus) => void,
-	onRemove: () => void,
-	submitTaskText: (text: string) => void,
+	delete: () => void,
+	updateTask: (text: string) => Observable<unknown>,
 }
 
 export default function TodoItem(props: TodoItemProps): JSX.Element {
 
-	const [isDirtyForm, setIsDirtyForm] = useState<boolean>(false);
 	const [currentOrPendingStatus, setCurrentOrPendingStatus]
 		= useState<TodoItemStatus>(props.todoItem.status);
+	const [isDirtyForm, setIsDirtyForm] = useState<boolean>(false);
 	const [fetchingStatus, setFetchingStatus] = useState<boolean>(false);
 	const [fetchSubscription, setFetchSubscription] = useState<Subscription>();
-	const [deletingTodoItem, setDeletingTodoItem] = useState<boolean>(false);
+	const [updatingTask, setUpdatingTask] = useState<boolean>(false);
+	const [deletingItself, setDeletingItself] = useState<boolean>(false);
 
 	function validateFields(fields: { task: string }) {
 		let errors = {};
@@ -90,21 +91,34 @@ export default function TodoItem(props: TodoItemProps): JSX.Element {
 	}
 
 	function deleteItem(item: Pick<IExistingTodoItem, "id">) {
-		if (!deletingTodoItem) {
-			setDeletingTodoItem(true);
-			// TODO set other deletes disabled during this deletion.
+		if (!deletingItself) {
+			setDeletingItself(true);
 			TodoItemClient.deleteTodoItem(item)
 				.subscribe(
 					() => {
-						setDeletingTodoItem(false);
-						props.onRemove();
+						setDeletingItself(false);
+						props.delete();
 					},
 					() => {
 						// TODO handle error
-						setDeletingTodoItem(false);
+						setDeletingItself(false);
 					}
 				);
 		}
+	}
+
+	function updateTask(newTask: string) {
+		setUpdatingTask(true);
+		props.updateTask(newTask)
+			.subscribe(
+				() => {
+					setUpdatingTask(false);
+				},
+				() => {
+					setUpdatingTask(false);
+					// TODO handle
+				},
+			);
 	}
 
 	const minHeight = "4rem";
@@ -115,12 +129,15 @@ export default function TodoItem(props: TodoItemProps): JSX.Element {
 					<ChangeTodoItemStatusButton status={props.todoItem.status}
 						nextStatus={nextStatus}
 						currentOrPendingStatus={currentOrPendingStatus}
-						fetchingStatus={fetchingStatus} />
+						fetchingStatus={fetchingStatus}
+						disabled={deletingItself}
+					/>
 
 					<SelectTodoItemStatusDropdownButton status={props.todoItem.status}
 						changeStatus={updateStatus}
 						currentOrPendingStatus={currentOrPendingStatus}
 						fetchingStatus={fetchingStatus}
+						disabled={deletingItself}
 					/>
 				</div>
 			</div>
@@ -131,7 +148,7 @@ export default function TodoItem(props: TodoItemProps): JSX.Element {
 					validate={(values: { task: string }) => validateFields(values)}
 					enableReinitialize
 					onSubmit={(values: { task: string }) => {
-						props.submitTaskText(values.task);
+						updateTask(values.task);
 					}}>
 					{({ isValid, dirty, handleReset }) => {
 						setIsDirtyForm(dirty);
@@ -147,7 +164,7 @@ export default function TodoItem(props: TodoItemProps): JSX.Element {
 									</div>
 									{dirty &&
 										<TaskActionButtons
-											disabled={!isValid}
+											disabled={!isValid || updatingTask || deletingItself}
 											cancelPressed={handleReset} />
 									}
 								</div>

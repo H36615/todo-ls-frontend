@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { Observable } from "rxjs";
+import { tap } from "rxjs/operators";
 import BasicButton from "../../common/BasicButton/BasicButton";
 import LoadingSpinner from "../../common/LoadingSpinner/LoadingSpinner";
 import { IExistingTodoItem, TodoItemStatus } from "../../utils/HttpClient/Interfaces";
@@ -57,11 +59,7 @@ export default function TodoListView(props: TodoListViewProps): JSX.Element {
 		);
 	}
 
-	function updateItemTask(itemId: number, task: string) {
-		console.log(itemId, task);
-	}
-
-	function updateItemStatus(itemId: number, newStatus: TodoItemStatus) {
+	function changeItemStatus(itemId: number, newStatus: TodoItemStatus) {
 		const tmpItems = todoItems.slice();
 		const foundItem = tmpItems.find(item => item.id === itemId);
 		if (foundItem)
@@ -70,6 +68,24 @@ export default function TodoListView(props: TodoListViewProps): JSX.Element {
 		setTodoItems(
 			tmpItems
 		);
+	}
+
+	function updateItemTask(item: IExistingTodoItem, newTask: string): Observable<unknown> {
+		// TODO loading indicator
+
+		return TodoItemClient.updateTodoItem({ ...item, task: newTask })
+			.pipe(
+				tap(() => {
+					// -- Update state's todo item's task
+					const tmpItems = todoItems.slice();
+					const foundItem = tmpItems.find(tmpItem => tmpItem.id === item.id);
+					if (foundItem)
+						foundItem.task = newTask;
+					setTodoItems(
+						tmpItems
+					);
+				})
+			);
 	}
 
 	function removeItem(itemId: number) {
@@ -87,8 +103,8 @@ export default function TodoListView(props: TodoListViewProps): JSX.Element {
 					<LoadingSpinner xySizeInPx={36} />
 				</div>;
 			else
-				return <TodoList todoItems={todoItems} removeTodoItem={removeItem}
-					submitTaskText={updateItemTask} statusChanged={updateItemStatus} />;
+				return <TodoList todoItems={todoItems} deleteItem={removeItem}
+					updateItemTask={updateItemTask} changeItemStatus={changeItemStatus} />;
 		}
 		else
 			return <div className="text-center pt-5 pb-5
