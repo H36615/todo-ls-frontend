@@ -15,7 +15,7 @@ import TaskActionButtons from "./TaskActionButtons";
 export interface TodoItemProps {
 	todoItem: IExistingTodoItem,
 	changeStatus: (newStatus: TodoItemStatus) => void,
-	delete: () => void,
+	delete: () => Observable<unknown>,
 	updateTask: (text: string) => Observable<unknown>,
 }
 
@@ -90,10 +90,10 @@ export default function TodoItem(props: TodoItemProps): JSX.Element {
 		);
 	}
 
-	function deleteItem(item: Pick<IExistingTodoItem, "id">) {
+	function deleteItem() {
 		if (!deletingItself) {
 			setDeletingItself(true);
-			TodoItemClient.deleteTodoItem(item)
+			props.delete()
 				.subscribe(
 					() => {
 						setDeletingItself(false);
@@ -175,7 +175,7 @@ export default function TodoItem(props: TodoItemProps): JSX.Element {
 			</div>
 			{!isDirtyForm &&
 				<div className="flex items-center justify-end ml-1 w-14">
-					<IconButton onClick={() => deleteItem({ id: props.todoItem.id })}>
+					<IconButton onClick={deleteItem}>
 						<DeleteIcon />
 					</IconButton>
 				</div>

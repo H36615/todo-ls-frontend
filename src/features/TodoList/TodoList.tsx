@@ -6,7 +6,7 @@ import "./TodoList.css";
 
 interface TodoListProps {
 	todoItems: IExistingTodoItem[],
-	deleteItem: (itemId: number) => void,
+	deleteItem: (item: IExistingTodoItem) => Observable<unknown>,
 	updateItemTask: (item: IExistingTodoItem, text: string) => Observable<unknown>,
 	changeItemStatus: (itemId: number, newStatus: TodoItemStatus) => void,
 }
@@ -22,7 +22,7 @@ export default function TodoList(props: TodoListProps): JSX.Element {
 					.map((todoItem) =>
 						<TodoItem key={todoItem.id}
 							todoItem={todoItem}
-							delete={() => props.deleteItem(todoItem.id)}
+							delete={() => props.deleteItem(todoItem)}
 							updateTask={
 								(text: string) => props.updateItemTask(todoItem, text)
 							}

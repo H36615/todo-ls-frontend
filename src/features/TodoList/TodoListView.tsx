@@ -88,12 +88,19 @@ export default function TodoListView(props: TodoListViewProps): JSX.Element {
 			);
 	}
 
-	function removeItem(itemId: number) {
-		setTodoItems(
-			todoItems
-				.slice()
-				.filter(item => item.id !== itemId)
-		);
+	function deleteItem(todoItem: IExistingTodoItem) {
+		const item_: Pick<IExistingTodoItem, "id"> = { id: todoItem.id };
+		return TodoItemClient.deleteTodoItem(item_)
+			.pipe(
+				tap(() => {
+					// Update the state
+					setTodoItems(
+						todoItems
+							.slice()
+							.filter(item => item.id !== todoItem.id)
+					);
+				})
+			);
 	}
 
 	function contentView(): JSX.Element {
@@ -103,7 +110,7 @@ export default function TodoListView(props: TodoListViewProps): JSX.Element {
 					<LoadingSpinner xySizeInPx={36} />
 				</div>;
 			else
-				return <TodoList todoItems={todoItems} deleteItem={removeItem}
+				return <TodoList todoItems={todoItems} deleteItem={deleteItem}
 					updateItemTask={updateItemTask} changeItemStatus={changeItemStatus} />;
 		}
 		else
