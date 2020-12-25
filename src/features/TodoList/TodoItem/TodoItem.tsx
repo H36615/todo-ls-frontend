@@ -3,7 +3,6 @@ import { Form, Formik } from "formik";
 import React, { useState } from "react";
 import { Subscription } from "rxjs";
 import { delay } from "rxjs/operators";
-import Button from "../../../common/Button/Button";
 import IconButton from "../../../common/IconButton/IconButton";
 import TextAreaInput from "../../../common/TextAreaInput/TextAreaInput";
 import DeleteIcon from "../../../icons/DeleteIcon";
@@ -11,6 +10,7 @@ import { IExistingTodoItem, TodoItemStatus } from "../../../utils/HttpClient/Int
 import { TodoItemClient } from "../../../utils/HttpClient/TodoItemClient";
 import ChangeTodoItemStatusButton from "./ChangeTodoItemStatusButton";
 import SelectTodoItemStatusDropdownButton from "./SelectTodoItemStatusDropdownButton";
+import TaskActionButtons from "./TaskActionButtons";
 
 export interface TodoItemProps {
 	todoItem: IExistingTodoItem,
@@ -146,32 +146,9 @@ export default function TodoItem(props: TodoItemProps): JSX.Element {
 											placeholder="" />
 									</div>
 									{dirty &&
-										<div className="ml-1 w-14">
-											<Button onClick={undefined}
-												disabled={!isValid}
-												type="submit"
-												classNames={`
-												whitespace-nowrap
-												w-full px-2
-												rounded-md bg-blue-50 bg-opacity-80
-												border-blue-200
-												text-blue-800
-								${!isValid ? "opacity-50" : "hover:bg-blue-100 hover:bg-opacity-80"}
-												m-0`}>
-												Save
-											</Button>
-											<Button onClick={handleReset}
-												type="submit"
-												classNames="text-xs
-												whitespace-nowrap
-												w-full px-2
-												rounded-md bg-white bg-opacity-80
-												hover:bg-gray-200 hover:bg-opacity-30
-												text-gray-700
-												m-0">
-												Cancel
-											</Button>
-										</div>
+										<TaskActionButtons
+											disabled={!isValid}
+											cancelPressed={handleReset} />
 									}
 								</div>
 							</Form>
