@@ -18,19 +18,20 @@ export default function TextAreaInput(props: TextAreaInputProps): JSX.Element {
 			<textarea {...field}
 				spellCheck="false"
 				name={props.name}
-				className={`resize-y h-12 w-300px text-sm
-				bg-gray-300 bg-opacity-5
+				className={`resize-y h-12 w-300px text-sm font-semibold
+				bg-gray-300 bg-opacity-10
 				focus:outline-none focus:shadow-outline
 				border-b rounded-sm
 				px-1 block w-full
 				appearance-none leading-normal
-				text-gray-800 placeholder-gray-800
-				${meta.touched && meta.error ? "border-red-500" : "border-gray-300"}`}
+				text-gray-600 placeholder-gray-800
+				${meta.touched && meta.error ? "border-red-500" : "border-gray-200"}
+				`}
 			/>
 
 			{meta.touched && meta.error ? (
 				<div className="error text-sm text-red-500">{meta.error}</div>
-			) : <div/>}
+			) : <div />}
 		</div>
 	);
 }

@@ -107,18 +107,23 @@ export default function TodoItem(props: TodoItemProps): JSX.Element {
 		}
 	}
 
+	const minHeight = "4rem";
 	return (
-		<div className="flex py-1 px-2 flex-row items-center">
-			<ChangeTodoItemStatusButton status={props.todoItem.status}
-				nextStatus={nextStatus}
-				currentOrPendingStatus={currentOrPendingStatus}
-				fetchingStatus={fetchingStatus} />
+		<div className="flex py-1 px-2 flex-row items-top">
+			<div>
+				<div  style={{ minHeight: minHeight }} className="flex flex-row items-center">
+					<ChangeTodoItemStatusButton status={props.todoItem.status}
+						nextStatus={nextStatus}
+						currentOrPendingStatus={currentOrPendingStatus}
+						fetchingStatus={fetchingStatus} />
 
-			<SelectTodoItemStatusDropdownButton status={props.todoItem.status}
-				changeStatus={updateStatus}
-				currentOrPendingStatus={currentOrPendingStatus}
-				fetchingStatus={fetchingStatus}
-			/>
+					<SelectTodoItemStatusDropdownButton status={props.todoItem.status}
+						changeStatus={updateStatus}
+						currentOrPendingStatus={currentOrPendingStatus}
+						fetchingStatus={fetchingStatus}
+					/>
+				</div>
+			</div>
 
 			<div className="flex-1">
 				<Formik
@@ -131,7 +136,7 @@ export default function TodoItem(props: TodoItemProps): JSX.Element {
 						setIsDirtyForm(dirty);
 						return (
 							<Form>
-								<div style={{ minHeight: "4rem" }}
+								<div style={{ minHeight: minHeight }}
 									className="flex flex-row items-center">
 									<div className="flex-1">
 										<TextAreaInput
