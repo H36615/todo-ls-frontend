@@ -111,7 +111,7 @@ export default function TodoItem(props: TodoItemProps): JSX.Element {
 	return (
 		<div className="flex py-1 px-2 flex-row items-top">
 			<div>
-				<div  style={{ minHeight: minHeight }} className="flex flex-row items-center">
+				<div style={{ minHeight: minHeight }} className="flex flex-row items-center">
 					<ChangeTodoItemStatusButton status={props.todoItem.status}
 						nextStatus={nextStatus}
 						currentOrPendingStatus={currentOrPendingStatus}
@@ -129,6 +129,7 @@ export default function TodoItem(props: TodoItemProps): JSX.Element {
 				<Formik
 					initialValues={{ task: props.todoItem.task } as { task: string }}
 					validate={(values: { task: string }) => validateFields(values)}
+					enableReinitialize
 					onSubmit={(values: { task: string }) => {
 						props.submitTaskText(values.task);
 					}}>
