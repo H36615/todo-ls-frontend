@@ -15,6 +15,7 @@ interface DropdownProps<T> {
 	buttonText: string,
 	buttonClassesNames?: string,
 	initialValue?: IOptionKeyValuePair<T>,
+	disabled?: boolean,
 }
 
 export default function Dropdown<T>(props: DropdownProps<T>): JSX.Element {
@@ -58,6 +59,7 @@ export default function Dropdown<T>(props: DropdownProps<T>): JSX.Element {
 	return (
 		<div className="relative inline-block text-left" ref={thisRef}>
 			<button
+				disabled={props.disabled}
 				type="button" className={`${props.buttonClassesNames}`}
 				onClick={switchDropdown}>
 				{props.buttonText}

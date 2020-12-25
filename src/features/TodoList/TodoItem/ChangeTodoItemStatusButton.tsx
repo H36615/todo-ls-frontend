@@ -54,10 +54,11 @@ export default function ChangeTodoItemStatusButton(
 				`}
 				onClick={props.nextStatus}
 			>
+				{/* Background & spinner */}
 				<div className={`animate-spin
 				h-full w-full rounded-full
 				bg-opacity-10
-				hover:bg-opacity-30
+				${!props.disabled && "hover:bg-opacity-30"}
 				border-4
 				absolute
 				${props.fetchingStatus ? "border-dashed" : "border-none"}

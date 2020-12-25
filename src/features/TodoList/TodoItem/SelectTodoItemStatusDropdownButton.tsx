@@ -53,6 +53,7 @@ export default function SelectTodoItemStatusDropdownButton(
 	return (
 		<div className="flex flex-col">
 			<Dropdown<TodoItemStatus>
+				disabled={props.disabled}
 				buttonText={getStatusText(props.status)}
 				selectionChange={props.changeStatus}
 				buttonClassesNames={`
@@ -64,9 +65,9 @@ export default function SelectTodoItemStatusDropdownButton(
 				${getStatusTextColor()}
 				mx-1
 				focus:outline-none
-				${props.disabled && "opacity-30"}
+				${props.disabled ? "opacity-30" : "hover:bg-opacity-40"}
 				${getStatusColorRules()}
-				bg-opacity-5 hover:bg-opacity-40`}
+				bg-opacity-5 `}
 				dropdownOptions={
 					[
 						{
