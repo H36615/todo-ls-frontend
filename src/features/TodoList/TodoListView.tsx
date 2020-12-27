@@ -61,15 +61,28 @@ export default function TodoListView(props: TodoListViewProps): JSX.Element {
 		);
 	}
 
-	function changeItemStatus(itemId: number, newStatus: TodoItemStatus) {
-		const tmpItems = todoItems.slice();
-		const foundItem = tmpItems.find(item => item.id === itemId);
-		if (foundItem)
-			foundItem.status = newStatus;
+	function changeItemStatus(item: IExistingTodoItem, newStatus: TodoItemStatus)
+		: Observable<unknown> {
 
-		setTodoItems(
-			tmpItems
-		);
+		const newTodoItem = { ...item, status: newStatus };
+		return TodoItemClient.updateTodoItem(newTodoItem)
+			.pipe(
+				tap(() => {
+					// -- Update the state
+					const tmpItems = todoItems.slice();
+					const foundItem = tmpItems.find(i => i.id === item.id);
+					if (foundItem)
+						foundItem.status = newStatus;
+
+					setTodoItems(
+						tmpItems
+					);
+				}),
+				catchError(() => {
+					props.toast({ text: "Updating todo item's status failed", type: "error" });
+					throw new Error("Error toasted");
+				})
+			);
 	}
 
 	function updateItemTask(item: IExistingTodoItem, newTask: string): Observable<unknown> {
@@ -124,8 +137,10 @@ export default function TodoListView(props: TodoListViewProps): JSX.Element {
 				</BasicButton>
 			</div>
 			{props.signedIn
-				? <TodoList todoItems={todoItems} deleteItem={deleteItem}
-					updateItemTask={updateItemTask} changeItemStatus={changeItemStatus} />
+				? <TodoList todoItems={todoItems}
+					deleteItem={deleteItem}
+					updateItemTask={updateItemTask}
+					changeItemStatus={changeItemStatus} />
 				: <div className="text-center pt-5 pb-5
 					border-t border-b border-black border-opacity-20">
 					Sign in to start using todo-ls

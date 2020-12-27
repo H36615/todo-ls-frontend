@@ -7,14 +7,13 @@ import IconButton from "../../../common/IconButton/IconButton";
 import TextAreaInput from "../../../common/TextAreaInput/TextAreaInput";
 import DeleteIcon from "../../../icons/DeleteIcon";
 import { IExistingTodoItem, TodoItemStatus } from "../../../utils/HttpClient/Interfaces";
-import { TodoItemClient } from "../../../utils/HttpClient/TodoItemClient";
 import ChangeTodoItemStatusButton from "./ChangeTodoItemStatusButton";
 import SelectTodoItemStatusDropdownButton from "./SelectTodoItemStatusDropdownButton";
 import TaskActionButtons from "./TaskActionButtons";
 
 export interface TodoItemProps {
 	todoItem: IExistingTodoItem,
-	changeStatus: (newStatus: TodoItemStatus) => void,
+	changeStatus: (newStatus: TodoItemStatus) => Observable<unknown>,
 	delete: () => Observable<unknown>,
 	updateTask: (text: string) => Observable<unknown>,
 }
@@ -50,6 +49,7 @@ export default function TodoItem(props: TodoItemProps): JSX.Element {
 	}
 
 	function updateStatus(newStatus: TodoItemStatus) {
+		// Do not change to current status
 		if (currentOrPendingStatus === newStatus)
 			return;
 
@@ -59,8 +59,7 @@ export default function TodoItem(props: TodoItemProps): JSX.Element {
 		if (fetchSubscription)
 			fetchSubscription.unsubscribe();
 
-		const extraWaitingTimeInMillis = 500;
-		const newTodoItem = { ...props.todoItem, status: newStatus };
+		const extraWaitingTimeInMillis = 400;
 
 		setFetchSubscription(
 			of(true)
@@ -69,16 +68,14 @@ export default function TodoItem(props: TodoItemProps): JSX.Element {
 					// as the user might spam the status change, causing
 					// server load.
 					delay(extraWaitingTimeInMillis),
-					concatMap(() => TodoItemClient.updateTodoItem(newTodoItem)),
+					concatMap(() => props.changeStatus(newStatus)),
 					take(1),
 				)
 				.subscribe(
 					() => {
 						setFetchingStatus(false);
-						props.changeStatus(newStatus);
 					},
 					() => {
-						// TODO handle
 						setFetchingStatus(false);
 						setCurrentOrPendingStatus(props.todoItem.status);
 					}

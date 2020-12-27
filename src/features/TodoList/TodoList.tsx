@@ -8,7 +8,7 @@ interface TodoListProps {
 	todoItems: IExistingTodoItem[],
 	deleteItem: (item: IExistingTodoItem) => Observable<unknown>,
 	updateItemTask: (item: IExistingTodoItem, text: string) => Observable<unknown>,
-	changeItemStatus: (itemId: number, newStatus: TodoItemStatus) => void,
+	changeItemStatus: (item: IExistingTodoItem, newStatus: TodoItemStatus) => Observable<unknown>,
 }
 
 export default function TodoList(props: TodoListProps): JSX.Element {
@@ -28,7 +28,7 @@ export default function TodoList(props: TodoListProps): JSX.Element {
 							}
 							changeStatus={
 								(newStatus: TodoItemStatus) => props.changeItemStatus(
-									todoItem.id, newStatus
+									todoItem, newStatus
 								)
 							}
 						/>
