@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Observable } from "rxjs";
-import { tap } from "rxjs/operators";
+import { catchError, tap } from "rxjs/operators";
 import BasicButton from "../../common/BasicButton/BasicButton";
 import LoadingSpinner from "../../common/LoadingSpinner/LoadingSpinner";
 import { ToastProps } from "../../common/Toast/Toast";
@@ -36,7 +36,7 @@ export default function TodoListView(props: TodoListViewProps): JSX.Element {
 				setFetchingTodoItems(false);
 			},
 			() => {
-				// TODO handle error
+				props.toast({ text: "Getting todo items failed", type: "error" });
 				setFetchingTodoItems(false);
 			}
 		);
@@ -55,7 +55,8 @@ export default function TodoListView(props: TodoListViewProps): JSX.Element {
 				setUpdatingItem(false);
 			},
 			() => {
-				// TODO Handle
+				props.toast({ text: "Adding todo item failed", type: "error" });
+				setUpdatingItem(false);
 			}
 		);
 	}
@@ -83,7 +84,11 @@ export default function TodoListView(props: TodoListViewProps): JSX.Element {
 					setTodoItems(
 						tmpItems
 					);
-				})
+				}),
+				catchError(() => {
+					props.toast({ text: "Updating todo item's task failed", type: "error" });
+					throw new Error("Error toasted");
+				}),
 			);
 	}
 
@@ -100,7 +105,11 @@ export default function TodoListView(props: TodoListViewProps): JSX.Element {
 								.filter(item => item.id !== todoItem.id);
 						}
 					);
-				})
+				}),
+				catchError(() => {
+					props.toast({ text: "Deleting todo item failed", type: "error" });
+					throw new Error("Error toasted");
+				}),
 			);
 	}
 

@@ -102,7 +102,6 @@ export default function TodoItem(props: TodoItemProps): JSX.Element {
 						props.delete();
 					},
 					() => {
-						// TODO handle error
 						setDeletingItself(false);
 					}
 				);
@@ -118,7 +117,6 @@ export default function TodoItem(props: TodoItemProps): JSX.Element {
 				},
 				() => {
 					setUpdatingTask(false);
-					// TODO handle
 				},
 			);
 	}
