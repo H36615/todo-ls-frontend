@@ -1,8 +1,8 @@
 
 import { Form, Formik } from "formik";
 import React, { useState } from "react";
-import { Observable, Subscription } from "rxjs";
-import { delay } from "rxjs/operators";
+import { Observable, of, Subscription } from "rxjs";
+import { concatMap, delay, take } from "rxjs/operators";
 import IconButton from "../../../common/IconButton/IconButton";
 import TextAreaInput from "../../../common/TextAreaInput/TextAreaInput";
 import DeleteIcon from "../../../icons/DeleteIcon";
@@ -63,12 +63,14 @@ export default function TodoItem(props: TodoItemProps): JSX.Element {
 		const newTodoItem = { ...props.todoItem, status: newStatus };
 
 		setFetchSubscription(
-			TodoItemClient.updateTodoItem(newTodoItem)
+			of(true)
 				.pipe(
-					// Set user to wait a little before sending the request,
-					// as the user might spam the status change thus reducing
+					// Set user to wait a little before sending the request
+					// as the user might spam the status change, causing
 					// server load.
 					delay(extraWaitingTimeInMillis),
+					concatMap(() => TodoItemClient.updateTodoItem(newTodoItem)),
+					take(1),
 				)
 				.subscribe(
 					() => {
