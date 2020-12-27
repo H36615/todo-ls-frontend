@@ -59,11 +59,11 @@ export default function SelectTodoItemStatusDropdownButton(
 				buttonClassesNames={`
 				py-1
 				border
-				w-20 ml-2 mr-1 font-bold
+				w-20 font-bold
 				text-sm
 				rounded-lg
 				${getStatusTextColor()}
-				mx-1
+				mx-3
 				focus:outline-none
 				${props.disabled ? "opacity-30" : "hover:bg-opacity-40"}
 				${getStatusColorRules()}

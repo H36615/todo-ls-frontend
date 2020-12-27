@@ -20,7 +20,7 @@ export default function TextAreaInput(props: TextAreaInputProps): JSX.Element {
 				disabled={props.disabled}
 				spellCheck="false"
 				name={props.name}
-				className={`resize-y h-12 w-300px text-sm font-semibold
+				className={`resize-y h-11 w-300px text-sm font-semibold
 				bg-gray-300 bg-opacity-10
 				focus:outline-none focus:shadow-outline
 				border-b rounded-sm

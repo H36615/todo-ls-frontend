@@ -118,7 +118,7 @@ export default function TodoItem(props: TodoItemProps): JSX.Element {
 			);
 	}
 
-	const minHeight = "4rem";
+	const minHeight = "3.2rem";
 	return (
 		<div className="flex py-1 px-2 flex-row items-top">
 			<div>

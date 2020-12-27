@@ -47,7 +47,7 @@ export default function ChangeTodoItemStatusButton(
 				disabled={props.disabled}
 				className={`
 				items-center mx-auto flex-shrink-0 flex
-				justify-center h-10 w-10
+				justify-center h-8 w-8
 				focus:outline-none
 				${props.disabled && "opacity-30"}
 				relative
@@ -55,13 +55,13 @@ export default function ChangeTodoItemStatusButton(
 				onClick={props.nextStatus}
 			>
 				{/* Background & spinner */}
-				<div className={`animate-spin
+				<div className={`
 				h-full w-full rounded-full
 				bg-opacity-10
 				${!props.disabled && "hover:bg-opacity-30"}
 				border-4
 				absolute
-				${props.fetchingStatus ? "border-dashed" : "border-none"}
+				${props.fetchingStatus ? "border-dashed animate-spin" : "border-none"}
 				${getStatusColorRules()}
 				`} />
 				{currentIcon()}
