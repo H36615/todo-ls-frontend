@@ -13,6 +13,8 @@ interface TodoListViewProps {
 
 export default function TodoListView(props: TodoListViewProps): JSX.Element {
 
+	// TODO fix the add item & delete item race condition (?).
+
 	const [fetchingTodoItems, setFetchingTodoItems] = useState<boolean>(false);
 	const [todoItems, setTodoItems] = useState<IExistingTodoItem[]>([]);
 	const [updatingItem, setUpdatingItem] = useState<boolean>(false);
@@ -54,7 +56,6 @@ export default function TodoListView(props: TodoListViewProps): JSX.Element {
 			},
 			() => {
 				// TODO Handle
-				setUpdatingItem(false);
 			}
 		);
 	}
@@ -71,8 +72,6 @@ export default function TodoListView(props: TodoListViewProps): JSX.Element {
 	}
 
 	function updateItemTask(item: IExistingTodoItem, newTask: string): Observable<unknown> {
-		// TODO loading indicator
-
 		return TodoItemClient.updateTodoItem({ ...item, task: newTask })
 			.pipe(
 				tap(() => {
@@ -103,35 +102,24 @@ export default function TodoListView(props: TodoListViewProps): JSX.Element {
 			);
 	}
 
-	function contentView(): JSX.Element {
-		if (props.signedIn) {
-			if (fetchingTodoItems)
-				return <div className="flex justify-center m-4">
-					<LoadingSpinner xySizeInPx={36} />
-				</div>;
-			else
-				return <TodoList todoItems={todoItems} deleteItem={deleteItem}
-					updateItemTask={updateItemTask} changeItemStatus={changeItemStatus} />;
-		}
-		else
-			return <div className="text-center pt-5 pb-5
-				border-t border-b border-black border-opacity-20">
-				Sign in to start using todo-ls
-			</div>;
-	}
-
 	return (
 		<div className="TodoListView">
-			<div className="flex justify-end mr-5 mt-5 mb-5">
-				<BasicButton onClick={() => { addItem(); }} disabled={
+			<div className="flex justify-end mr-5 mt-5 mb-5 items-center">
+				{(updatingItem || fetchingTodoItems) && <LoadingSpinner />}
+				<BasicButton classNames={"ml-2"} onClick={addItem} disabled={
 					updatingItem || fetchingTodoItems || !alreadySignedIn
 				}>
 					Add item
 				</BasicButton>
 			</div>
-			<div>
-				{contentView()}
-			</div>
+			{props.signedIn
+				? <TodoList todoItems={todoItems} deleteItem={deleteItem}
+					updateItemTask={updateItemTask} changeItemStatus={changeItemStatus} />
+				: <div className="text-center pt-5 pb-5
+					border-t border-b border-black border-opacity-20">
+					Sign in to start using todo-ls
+				</div>
+			}
 		</div>
 	);
 }
