@@ -5,6 +5,7 @@ interface TextAreaInputProps {
 	name: string,
 	type?: "text" | "email" | "password",
 	placeholder?: string,
+	disabled?: boolean,
 }
 
 export default function TextAreaInput(props: TextAreaInputProps): JSX.Element {
@@ -16,6 +17,7 @@ export default function TextAreaInput(props: TextAreaInputProps): JSX.Element {
 	return (
 		<div className="w-full">
 			<textarea {...field}
+				disabled={props.disabled}
 				spellCheck="false"
 				name={props.name}
 				className={`resize-y h-12 w-300px text-sm font-semibold
@@ -25,6 +27,7 @@ export default function TextAreaInput(props: TextAreaInputProps): JSX.Element {
 				px-1 block w-full
 				appearance-none leading-normal
 				text-gray-600 placeholder-gray-800
+				${props.disabled && "opacity-50"}
 				${meta.touched && meta.error ? "border-red-500" : "border-gray-200"}
 				`}
 			/>
