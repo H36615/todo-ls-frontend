@@ -3,12 +3,14 @@ import { Observable } from "rxjs";
 import { tap } from "rxjs/operators";
 import BasicButton from "../../common/BasicButton/BasicButton";
 import LoadingSpinner from "../../common/LoadingSpinner/LoadingSpinner";
+import { ToastProps } from "../../common/Toast/Toast";
 import { IExistingTodoItem, TodoItemStatus } from "../../utils/HttpClient/Interfaces";
 import { TodoItemClient } from "../../utils/HttpClient/TodoItemClient";
 import TodoList from "./TodoList";
 
 interface TodoListViewProps {
 	signedIn: boolean,
+	toast: (toastProps: ToastProps) => void,
 }
 
 export default function TodoListView(props: TodoListViewProps): JSX.Element {

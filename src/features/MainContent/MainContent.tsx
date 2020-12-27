@@ -3,7 +3,6 @@ import BasicButton from "../../common/BasicButton/BasicButton";
 import Toast, { ToastProps } from "../../common/Toast/Toast";
 import { config } from "../../config/config";
 import { IExistingUser } from "../../utils/HttpClient/Interfaces";
-import { TodoItemClient } from "../../utils/HttpClient/TodoItemClient";
 import SignInOrUpModal from "../SignInOrUpModal/SignInOrUpModal";
 import TodoListView from "../TodoList/TodoListView";
 import "./MainContent.css";
@@ -14,18 +13,23 @@ export default function MainContent(): JSX.Element {
 	const [toastProps, setToastProps] = useState<ToastProps>();
 	const [userInfo, setUserInfo] = useState<IExistingUser | undefined>(undefined);
 
-	/** @param toast toast optional toast on close. */
+	/** @param toastProps toast optional toast on close. */
 	function closeSignInOrUpModal(
-		toast: ToastProps | undefined,
+		toastProps: ToastProps | undefined,
 		signedInUser: IExistingUser | undefined
 	): void {
-		if (toast)
-			setToastProps(toast);
+		if (toastProps)
+			toast(toastProps);
 
 		if (signedInUser)
 			setUserInfo(signedInUser);
 
 		setSignInOrUpModalOpen(false);
+	}
+
+	function toast(toastProps: ToastProps): void {
+		if (toastProps)
+			setToastProps(toastProps);
 	}
 
 	return (
@@ -63,7 +67,7 @@ export default function MainContent(): JSX.Element {
 
 			<div className="panel rounded-lg border-solid border border-black
 				border-opacity-20">
-				<TodoListView signedIn={userInfo !== undefined} />
+				<TodoListView signedIn={userInfo !== undefined} toast={toast} />
 			</div>
 
 			<Toast text={toastProps?.text || ""} type={toastProps?.type || "info"}></Toast>
