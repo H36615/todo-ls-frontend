@@ -160,6 +160,7 @@ export default function TodoItem(props: TodoItemProps): JSX.Element {
 									className="flex flex-row items-center">
 									<div className="flex-1">
 										<TextAreaInput
+											disabled={deletingItself}
 											name="task"
 											type="text"
 											placeholder="" />
