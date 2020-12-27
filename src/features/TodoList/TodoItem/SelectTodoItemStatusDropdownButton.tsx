@@ -32,22 +32,22 @@ export default function SelectTodoItemStatusDropdownButton(
 
 	function getStatusTextColor() {
 		if (props.currentOrPendingStatus === TodoItemStatus.todo)
-			return "text-pink-800";
+			return "text-yellow-800";
 		if (props.currentOrPendingStatus === TodoItemStatus.inProgres)
 			return "text-blue-800";
 		if (props.currentOrPendingStatus === TodoItemStatus.done)
 			return "text-green-800";
-		return "text-yellow-800";
+		return "text-red-800";
 	}
 
 	function getStatusColorRules() {
 		if (props.currentOrPendingStatus === TodoItemStatus.todo)
-			return "bg-pink-200 border-pink-300";
+			return "bg-yellow-200 border-yellow-300";
 		if (props.currentOrPendingStatus === TodoItemStatus.inProgres)
 			return "bg-blue-200 border-blue-300";
 		if (props.currentOrPendingStatus === TodoItemStatus.done)
 			return "bg-green-200 border-green-300";
-		return "bg-yellow-200 border-yellow-300";
+		return "bg-red-200 border-red-300";
 	}
 
 	return (

@@ -33,12 +33,12 @@ export default function ChangeTodoItemStatusButton(
 
 	function getStatusColorRules() {
 		if (props.currentOrPendingStatus === TodoItemStatus.todo)
-			return "bg-pink-500 border-pink-500";
+			return "bg-yellow-500 border-yellow-500";
 		if (props.currentOrPendingStatus === TodoItemStatus.inProgres)
 			return "bg-blue-500 border-blue-500";
 		if (props.currentOrPendingStatus === TodoItemStatus.done)
 			return "bg-green-500 border-green-500";
-		return "bg-yellow-500 border-yellow-500";
+		return "bg-red-500 border-red-500";
 	}
 
 	return (
