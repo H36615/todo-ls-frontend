@@ -13,8 +13,6 @@ interface TodoListViewProps {
 
 export default function TodoListView(props: TodoListViewProps): JSX.Element {
 
-	// TODO fix the add item & delete item race condition (?).
-
 	const [fetchingTodoItems, setFetchingTodoItems] = useState<boolean>(false);
 	const [todoItems, setTodoItems] = useState<IExistingTodoItem[]>([]);
 	const [updatingItem, setUpdatingItem] = useState<boolean>(false);
@@ -94,9 +92,11 @@ export default function TodoListView(props: TodoListViewProps): JSX.Element {
 				tap(() => {
 					// Update the state
 					setTodoItems(
-						todoItems
-							.slice()
-							.filter(item => item.id !== todoItem.id)
+						_todoItems => {
+							return _todoItems
+								.slice()
+								.filter(item => item.id !== todoItem.id);
+						}
 					);
 				})
 			);
