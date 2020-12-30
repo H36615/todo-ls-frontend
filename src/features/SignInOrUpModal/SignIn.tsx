@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Formik, Form } from "formik";
 import Input from "../../common/Input/Input";
 import BasicButton from "../../common/BasicButton/BasicButton";
@@ -6,6 +6,8 @@ import { UserClient } from "../../utils/HttpClient/UserClient";
 import { ToastProps } from "../../common/Toast/Toast";
 import { IExistingUser } from "../../utils/HttpClient/Interfaces";
 import LoadingSpinner from "../../common/LoadingSpinner/LoadingSpinner";
+import FillTestUserInfoNote from "./FillTestUserInfoNote";
+import { config } from "../../config/config";
 
 interface LoginProps {
 	closeModal: (toast: ToastProps, signInUserInfo: IExistingUser) => void,
@@ -14,6 +16,8 @@ interface LoginProps {
 }
 
 export default function SignIn(props: LoginProps): JSX.Element {
+
+	const [showWarning, setShowWarning] = useState<boolean>(false);
 
 	interface FormFields {
 		email: string,
@@ -43,6 +47,20 @@ export default function SignIn(props: LoginProps): JSX.Element {
 		return UserClient.signIn(values.email, values.password);
 	}
 
+	function agreeOnTestUserInfoFill(formFields: FormFields) {
+		if (!showWarning)
+			setShowWarning(true);
+		else {
+			fillInTestUserInfo(formFields);
+			setShowWarning(false);
+		}
+	}
+
+	function fillInTestUserInfo(formFields: FormFields) {
+		formFields.email = config.publicTestUserEmail;
+		formFields.password = config.publicTestUserPassword;
+	}
+
 	return (
 		<Formik
 			initialValues={{ email: "", password: "" } as FormFields}
@@ -65,8 +83,19 @@ export default function SignIn(props: LoginProps): JSX.Element {
 						}
 					);
 			}}>
-			{({ isSubmitting, isValid }) => (
+			{({ isSubmitting, isValid, values, setFieldTouched }) => (
 				<Form>
+					<div className="mb-2">
+						<FillTestUserInfoNote
+							showWarning={showWarning}
+							agreeOnTestUserInfoFill={
+								() => {
+									agreeOnTestUserInfoFill(values);
+									// Touch any field to update the form.
+									setFieldTouched("email");
+								}
+							} />
+					</div>
 					<Input label="Email Address"
 						name="email"
 						type="email"
@@ -90,6 +119,6 @@ export default function SignIn(props: LoginProps): JSX.Element {
 					</div>
 				</Form>
 			)}
-		</Formik>
+		</Formik >
 	);
 }

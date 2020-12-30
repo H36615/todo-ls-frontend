@@ -3,7 +3,7 @@ import InfoIcon from "../../icons/InfoIcon";
 import WarningIcon from "../../icons/WarningIcon";
 
 interface NoteProps {
-	children: string,
+	children: JSX.Element,
 	/** Defaults to `info` */
 	type?: "info" | "warn",
 }
