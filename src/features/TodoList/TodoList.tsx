@@ -1,3 +1,4 @@
+import { Transition } from "@headlessui/react";
 import React from "react";
 import { Observable } from "rxjs";
 import { IExistingTodoItem, TodoItemStatus } from "../../utils/HttpClient/Interfaces";
@@ -20,18 +21,25 @@ export default function TodoList(props: TodoListProps): JSX.Element {
 				&& props.todoItems
 					.sort((a, b) => a.id - b.id)
 					.map((todoItem) =>
-						<TodoItem key={todoItem.id}
-							todoItem={todoItem}
-							delete={() => props.deleteItem(todoItem)}
-							updateTask={
-								(text: string) => props.updateItemTask(todoItem, text)
-							}
-							changeStatus={
-								(newStatus: TodoItemStatus) => props.changeItemStatus(
-									todoItem, newStatus
-								)
-							}
-						/>
+						<Transition
+							key={todoItem.id}
+							show
+							enter="ease-out duration-200"
+							enterFrom="transform scale-y-0"
+							enterTo="transform scale-y-100">
+							<TodoItem
+								todoItem={todoItem}
+								delete={() => props.deleteItem(todoItem)}
+								updateTask={
+									(text: string) => props.updateItemTask(todoItem, text)
+								}
+								changeStatus={
+									(newStatus: TodoItemStatus) => props.changeItemStatus(
+										todoItem, newStatus
+									)
+								}
+							/>
+						</Transition>
 					)}
 		</div>
 	);
