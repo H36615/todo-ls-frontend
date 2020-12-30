@@ -6,6 +6,7 @@ import { UserClient } from "../../utils/HttpClient/UserClient";
 import { Observable } from "rxjs";
 import { ToastProps } from "../../common/Toast/Toast";
 import LoadingSpinner from "../../common/LoadingSpinner/LoadingSpinner";
+import Note from "../../common/Note/Note";
 
 interface SignUpProps {
 	closeModal: (toast: ToastProps) => void,
@@ -87,6 +88,16 @@ export default function SignUp(props: SignUpProps): JSX.Element {
 						name="username"
 						type="text"
 						placeholder="" />
+
+					<div className="mb-1">
+						<Note type="info">
+							<p>
+								Email will not be used for anything other than signing in
+								to the account.
+								No emails will be sent to the email.
+							</p>
+						</Note>
+					</div>
 
 					<Input label="Email Address"
 						name="email"
