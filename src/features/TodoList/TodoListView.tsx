@@ -136,6 +136,7 @@ export default function TodoListView(props: TodoListViewProps): JSX.Element {
 					Add item
 				</BasicButton>
 			</div>
+			{/* TODO show different view for failed session check? */}
 			{props.signedIn
 				? <TodoList todoItems={todoItems}
 					deleteItem={deleteItem}
