@@ -15,16 +15,23 @@ interface TodoListViewProps {
 
 export default function TodoListView(props: TodoListViewProps): JSX.Element {
 
-	const [fetchingTodoItems, setFetchingTodoItems] = useState<boolean>(false);
 	const [todoItems, setTodoItems] = useState<IExistingTodoItem[]>([]);
+	const [fetchingTodoItems, setFetchingTodoItems] = useState<boolean>(false);
 	const [updatingItem, setUpdatingItem] = useState<boolean>(false);
-	/** Use state for signed in status too just to make sure data will not reload twice. */
+	/**
+	 * State for already signed in status, just to make sure the data will not be reloaded twice.
+	 */
 	const [alreadySignedIn, setAlreadySignedIn] = useState<boolean>(false);
 
 	useEffect(() => {
 		if (props.signedIn === true && !alreadySignedIn) {
 			setAlreadySignedIn(true);
 			fetchTodoItems();
+		}
+		else if (props.signedIn === false) {
+			setAlreadySignedIn(false);
+			// Clear items on sign out.
+			setTodoItems([]);
 		}
 	}, [props.signedIn]);
 
