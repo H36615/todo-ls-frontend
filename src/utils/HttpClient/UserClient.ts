@@ -23,10 +23,15 @@ export class UserClient extends HttpClient {
 		);
 	}
 
+	public static signOut(): Observable<AjaxResponse> {
+		return this.getRequest(
+			this.routePrefix + "/sign-out",
+		);
+	}
+
 	public static sessionIsValid(): Observable<AjaxResponse> {
 		return this.getRequest(
 			this.routePrefix + "/valid-session",
 		);
 	}
-
 }
