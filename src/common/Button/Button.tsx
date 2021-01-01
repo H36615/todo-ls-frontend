@@ -19,7 +19,9 @@ export default function Button(props: ButtonProps): JSX.Element {
 				bg-opacity-80
 				border border-gray-300
 				focus:outline-none
-				${props.classNames}`}
+				${props.classNames}
+				${props.disabled && "cursor-default"}
+				`}
 				onClick={props.onClick}>
 				<p className="bold">{props.children}</p>
 			</button>
