@@ -117,11 +117,12 @@ export default function MainContent(): JSX.Element {
 			<div className="flex flex-row w-full items-center mb-2">
 				<a href={config.sourceCodeUrl}
 					className="items-center rounded-md
-					border px-3 py-1
-					text-gray-700 bg-white bg-opacity-80
-					hover:bg-gray-200 hover:bg-opacity-30
+					px-3 py-1
+					text-gray-700
+					bg-gray-200 bg-opacity-50
+					hover:bg-opacity-100
 					focus:outline-none">
-					<p className="bold">Check out the src code</p>
+					<p className="bold">Check out the src git repository</p>
 				</a>
 				<div style={{ flex: 1 }}></div>
 				{userInfoView()}
