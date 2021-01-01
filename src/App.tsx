@@ -6,9 +6,9 @@ import MainContent from "./features/MainContent/MainContent";
 function App(): JSX.Element {
 	return (
 		<div className="App">
-			<div style={{ flex: 1 }}></div>
-			<MainContent></MainContent>
-			<div style={{ flex: 1 }}></div>
+			<div className="flex-1" />
+			<MainContent />
+			<div className="flex-1" />
 		</div>
 	);
 }
