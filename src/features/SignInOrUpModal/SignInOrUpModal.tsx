@@ -64,7 +64,7 @@ export default function SignInOrUpModal(props: SignInOrUpModalProps): JSX.Elemen
 						border-gray-300
 						focus:outline-none
 			${signInEnabled ?
-			"hover:bg-gray-200 hover:bg-opacity-30 bg-gray-100 shadow-inline_bottom" :
+			"hover:bg-gray-300 hover:bg-opacity-30 bg-gray-100 shadow-inline_bottom" :
 			"opacity-50 border-b-0"}
 						`}
 						onClick={() => setSignInEnabled(false)}>
