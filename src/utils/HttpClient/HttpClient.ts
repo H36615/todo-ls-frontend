@@ -2,8 +2,11 @@ import { ajax } from "rxjs/ajax";
 import { Observable } from "rxjs";
 import { config } from "../../config/config";
 import { AjaxResponse } from "rxjs/internal/observable/dom/AjaxObservable";
+import { catchError, timeout } from "rxjs/operators";
 
 export class HttpClient {
+
+	private static readonly timeOutInMillis = 5000;
 
 	public static getRequest(route: string, withCredentials = true): Observable<AjaxResponse> {
 		return ajax(
@@ -15,6 +18,12 @@ export class HttpClient {
 					"Content-Type": "application/json",
 				},
 			}
+		).pipe(
+			timeout(this.timeOutInMillis),
+			catchError(() => {
+				// TODO toast this.
+				throw new Error("Request timed out");
+			})
 		);
 	}
 
@@ -34,6 +43,12 @@ export class HttpClient {
 					"Content-Type": "application/json",
 				}
 			}
+		).pipe(
+			timeout(this.timeOutInMillis),
+			catchError(() => {
+				// TODO toast this.
+				throw new Error("Request timed out");
+			})
 		);
 	}
 
