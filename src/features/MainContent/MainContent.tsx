@@ -111,6 +111,7 @@ export default function MainContent(): JSX.Element {
 
 	return (
 		<div className="MainContent">
+			<p className="mb-4 text-2xl font-bold text-gray-700">todo-ls</p>
 			<SignInOrUpModal modalOpen={signInOrUpModalOpen}
 				closeModal={closeSignInOrUpModal} />
 
