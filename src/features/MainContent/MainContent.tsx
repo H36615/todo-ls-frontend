@@ -123,7 +123,7 @@ export default function MainContent(): JSX.Element {
 					bg-gray-200 bg-opacity-50
 					hover:bg-opacity-100
 					focus:outline-none">
-					<p className="bold">Check out the src git repository</p>
+					<p className="bold">src git repository</p>
 				</a>
 				<div style={{ flex: 1 }}></div>
 				{userInfoView()}
