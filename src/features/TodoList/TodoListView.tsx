@@ -137,11 +137,16 @@ export default function TodoListView(props: TodoListViewProps): JSX.Element {
 		<div className="TodoListView">
 			<div className="flex justify-end mr-5 mt-5 mb-5 items-center">
 				{(updatingItem || fetchingTodoItems) && <LoadingSpinner />}
-				<BasicButton classNames={"ml-2"} onClick={addItem} disabled={
-					updatingItem || fetchingTodoItems || !alreadySignedIn
-				}>
-					Add item
-				</BasicButton>
+				{alreadySignedIn &&
+					<BasicButton
+						classNames={"ml-2"}
+						onClick={addItem}
+						disabled={
+							updatingItem || fetchingTodoItems
+						}>
+						Add item
+					</BasicButton>
+				}
 			</div>
 			{/* TODO show different view for failed session check? */}
 			{props.signedIn
