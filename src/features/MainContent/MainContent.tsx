@@ -115,7 +115,7 @@ export default function MainContent(): JSX.Element {
 			<SignInOrUpModal modalOpen={signInOrUpModalOpen}
 				closeModal={closeSignInOrUpModal} />
 
-			<div className="flex flex-row w-full items-center mb-2">
+			<div className="flex flex-row flex-wrap w-full items-center mb-2">
 				<a href={config.sourceCodeUrl}
 					className="items-center rounded-md
 					px-3 py-1
