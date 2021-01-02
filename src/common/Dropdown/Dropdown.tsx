@@ -1,6 +1,5 @@
 // This component is necessarily a bit hacky so have to use this.
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Transition } from "@headlessui/react";
 import React, { useEffect, useRef, useState } from "react";
 import Button from "../Button/Button";
 
@@ -56,6 +55,13 @@ export default function Dropdown<T>(props: DropdownProps<T>): JSX.Element {
 		return () => document.removeEventListener("mousedown", pressOutside);
 	});
 
+	/** Get value for `bottom` property based on this components position on screen. */
+	function getBottomValueByScreenLocation(): number | undefined {
+		if (thisRef.current && window.innerHeight - thisRef.current.offsetTop >= 140)
+			return undefined; // downwards
+		return 30; // upwards, at approx on top of the button
+	}
+
 	return (
 		<div className="relative inline-block text-left" ref={thisRef}>
 			<button
@@ -64,15 +70,18 @@ export default function Dropdown<T>(props: DropdownProps<T>): JSX.Element {
 				onClick={switchDropdown}>
 				{props.buttonText}
 			</button>
-			<Transition show={dropdownOpen}>
+			{dropdownOpen &&
 				<div
 					className="
 					absolute z-30
-					left-0
+					right-0
 					rounded-md
 					bg-white
 					ring-1 ring-black ring-opacity-5"
-					style={{ minWidth: "5rem" }}>
+					style={{
+						minWidth: "5rem",
+						bottom: getBottomValueByScreenLocation(),
+					}}>
 					<div className="py-1">
 						{props.dropdownOptions && props.dropdownOptions.map((option, index) =>
 							<Button
@@ -92,7 +101,7 @@ export default function Dropdown<T>(props: DropdownProps<T>): JSX.Element {
 						)}
 					</div>
 				</div>
-			</Transition>
+			}
 		</div >
 	);
 }
