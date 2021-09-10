@@ -63,7 +63,12 @@ export default function MainContent(): JSX.Element {
 					setSigningOut(false);
 				},
 				() => {
-					// TODO Handle
+					toast(
+						{
+							text: "Sign out failed.",
+							type: "error",
+						}
+					);
 					setSigningOut(false);
 				}
 			);
