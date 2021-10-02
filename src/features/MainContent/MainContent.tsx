@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import BasicButton from "../../common/BasicButton/BasicButton";
 import Button from "../../common/Button/Button";
 import Toast, { ToastProps } from "../../common/Toast/Toast";
-import { config } from "../../config/config";
+import { EnvironmentUtils } from "../../utils/environment/Environment";
 import { IExistingUser } from "../../utils/HttpClient/Interfaces";
 import { UserClient } from "../../utils/HttpClient/UserClient";
 import SignInOrUpModal from "../SignInOrUpModal/SignInOrUpModal";
@@ -121,7 +121,7 @@ export default function MainContent(): JSX.Element {
 				closeModal={closeSignInOrUpModal} />
 
 			<div className="flex flex-row flex-wrap w-full items-center mb-2">
-				<a href={config.sourceCodeUrl}
+				<a href={EnvironmentUtils.getBackendUrl()}
 					className="items-center rounded-md
 					px-3 py-1
 					text-gray-700

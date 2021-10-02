@@ -1,8 +1,8 @@
 import { ajax } from "rxjs/ajax";
 import { Observable } from "rxjs";
-import { config } from "../../config/config";
 import { AjaxResponse } from "rxjs/internal/observable/dom/AjaxObservable";
 import { catchError, timeout } from "rxjs/operators";
+import { EnvironmentUtils } from "../environment/Environment";
 
 export class HttpClient {
 
@@ -11,7 +11,7 @@ export class HttpClient {
 	public static getRequest(route: string, withCredentials = true): Observable<AjaxResponse> {
 		return ajax(
 			{
-				url: config.backendUrl + route,
+				url: EnvironmentUtils.getBackendUrl() + route,
 				method: "GET",
 				withCredentials: withCredentials,
 				headers: {
@@ -35,7 +35,7 @@ export class HttpClient {
 	): Observable<AjaxResponse> {
 		return ajax(
 			{
-				url: config.backendUrl + route,
+				url: EnvironmentUtils.getBackendUrl() + route,
 				method: method,
 				body: bodyParam,
 				withCredentials: withCredentials,

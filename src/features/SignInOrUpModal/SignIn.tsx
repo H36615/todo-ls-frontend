@@ -7,7 +7,7 @@ import { ToastProps } from "../../common/Toast/Toast";
 import { IExistingUser } from "../../utils/HttpClient/Interfaces";
 import LoadingSpinner from "../../common/LoadingSpinner/LoadingSpinner";
 import FillTestUserInfoNote from "./FillTestUserInfoNote";
-import { config } from "../../config/config";
+import { EnvironmentUtils } from "../../utils/environment/Environment";
 
 interface LoginProps {
 	closeModal: (toast: ToastProps, signInUserInfo: IExistingUser) => void,
@@ -57,8 +57,8 @@ export default function SignIn(props: LoginProps): JSX.Element {
 	}
 
 	function fillInTestUserInfo(formFields: FormFields) {
-		formFields.email = config.publicTestUserEmail;
-		formFields.password = config.publicTestUserPassword;
+		formFields.email = EnvironmentUtils.getTestPublicUserEmail();
+		formFields.password = EnvironmentUtils.getTestPublicUserPassword();
 	}
 
 	return (
