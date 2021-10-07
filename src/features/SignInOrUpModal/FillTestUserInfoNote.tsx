@@ -13,13 +13,11 @@ export default function FillTestUserInfoNote(props: FillTestUserInfoNoteProps): 
 			<div>
 				{props.showWarning
 					? <p>
-						By using the shared test account, you agree that the
-						account is used by other users and its content is
-						uncesored and unsupervised.
+						Note that the test user and all its data is available
+						to everyone to see and modify.
 					</p>
 					: <p>
-						If you just want to test the app, you can sign in using
-						shared, publicly available testing user.
+						You can test the app using public test user.
 					</p>
 				}
 				<div className="mt-2">
@@ -27,8 +25,8 @@ export default function FillTestUserInfoNote(props: FillTestUserInfoNoteProps): 
 						type="button"
 						onClick={props.agreeOnTestUserInfoFill}>
 						{props.showWarning
-							? <p>I agree on the above, fill in the fields now</p>
-							: <p>Ok, fill in the fields for me...</p>
+							? <p>Understood. Fill in the fields</p>
+							: <p>Ok, fill in the fields...</p>
 						}
 					</BasicButton>
 				</div>

@@ -92,9 +92,8 @@ export default function SignUp(props: SignUpProps): JSX.Element {
 					<div className="mb-1">
 						<Note type="info">
 							<p>
-								Email will not be used for anything other than signing in
-								to the account.
-								No emails will be sent to the email.
+								Email is only used to login to the account
+								(No e.g. verfication step exists).
 							</p>
 						</Note>
 					</div>
